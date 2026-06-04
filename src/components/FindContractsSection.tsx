@@ -1,12 +1,7 @@
 import type { FindContractTool } from '../data/types'
 import { useInView } from '../hooks/useInView'
 import { useRipple } from '../hooks/useRipple'
-
-const TOOL_ICONS: Record<string, string> = {
-  'sam-opportunities': '🔎',
-  usaspending: '📊',
-  'sub-net': '🤝',
-}
+import { FindContractToolIcon, IconSearch } from './GuideIcons'
 
 interface FindContractsSectionProps {
   tools: FindContractTool[]
@@ -43,7 +38,7 @@ export function FindContractsSection({
                 <polyline points="20 6 9 17 4 12" className="check-draw" />
               </svg>
             ) : (
-              '🔍'
+              <IconSearch className="guide-icon guide-icon--step" />
             )}
           </div>
           <h2 className="step-title">Find Contracts</h2>
@@ -72,9 +67,7 @@ export function FindContractsSection({
         {tools.map((tool) => (
           <div key={tool.id} className="find-tool-card glass-card">
             <div className="find-tool-bg" aria-hidden="true" />
-            <span className="find-tool-icon" aria-hidden="true">
-              {TOOL_ICONS[tool.id] ?? '🔗'}
-            </span>
+            <FindContractToolIcon id={tool.id} />
             <h3>{tool.title}</h3>
             <p className="find-tool-oneline">
               {tool.description.split('.')[0]}.

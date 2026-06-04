@@ -5,6 +5,7 @@ import {
   getIndustryLabel,
   getStructureLabel,
 } from '../data/personalization'
+import { IconCelebration } from './GuideIcons'
 import { burstConfetti } from '../utils/confetti'
 
 interface CompletionModalProps {
@@ -29,9 +30,7 @@ export function CompletionModal({
   return (
     <div className="completion-overlay" role="dialog" aria-modal="true" aria-labelledby="completion-title">
       <div className="completion-modal glass-card">
-        <div className="completion-modal-icon" aria-hidden="true">
-          🎉
-        </div>
+        <IconCelebration />
         <h2 id="completion-title">Congratulations!</h2>
         <p className="completion-modal-lead">
           You&apos;ve completed your entire federal procurement roadmap. You&apos;re ready to pursue

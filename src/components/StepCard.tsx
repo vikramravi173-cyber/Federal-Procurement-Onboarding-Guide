@@ -3,6 +3,7 @@ import type { OnboardingStep } from '../data/types'
 import { capabilityStatementMustInclude } from '../data/steps'
 import { useInView } from '../hooks/useInView'
 import { useRipple } from '../hooks/useRipple'
+import { IconCheck } from './GuideIcons'
 
 interface StepCardProps {
   step: OnboardingStep
@@ -109,7 +110,10 @@ export function StepCard({
           <h3>What a Capability Statement Must Include</h3>
           <ul>
             {capabilityStatementMustInclude.map((item) => (
-              <li key={item}>{item}</li>
+              <li key={item}>
+                <IconCheck className="guide-icon guide-icon--list" />
+                <span>{item}</span>
+              </li>
             ))}
           </ul>
           <p className="capability-why">

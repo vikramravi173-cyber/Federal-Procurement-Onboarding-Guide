@@ -265,6 +265,37 @@ body:has(.hero) {
   color: var(--success);
 }
 
+.step-dot .guide-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.guide-icon {
+  flex-shrink: 0;
+}
+
+.guide-icon--sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.guide-icon--md {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.guide-icon--step {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.guide-icon--list {
+  width: 0.9rem;
+  height: 0.9rem;
+  margin-top: 0.2rem;
+  color: var(--success);
+}
+
 .sticky-nav-row {
   display: flex;
   align-items: center;
@@ -868,9 +899,16 @@ body:has(.hero) {
 }
 
 .find-tool-icon {
-  font-size: 1.75rem;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
   margin-bottom: 0.5rem;
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  color: var(--accent-light);
   position: relative;
   z-index: 1;
 }
@@ -939,17 +977,12 @@ body:has(.hero) {
 }
 
 .capability-details li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
   font-size: 0.88rem;
   color: var(--text-secondary);
-  padding: 0.3rem 0 0.3rem 1.1rem;
-  position: relative;
-}
-
-.capability-details li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: var(--success);
+  padding: 0.3rem 0;
 }
 
 /* Nav footer */
@@ -1044,9 +1077,17 @@ body:has(.hero) {
   to { opacity: 1; transform: translateY(0); }
 }
 
-.completion-modal-icon {
-  font-size: 3rem;
+.guide-icon-celebration {
+  display: flex;
+  justify-content: center;
   margin-bottom: 0.5rem;
+  color: var(--accent-light);
+  filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.35));
+}
+
+.guide-icon-celebration svg {
+  width: 3rem;
+  height: 3rem;
 }
 
 .completion-modal h2 {

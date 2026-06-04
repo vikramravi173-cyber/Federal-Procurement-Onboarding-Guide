@@ -21,6 +21,7 @@ import type { OnboardingStep } from './data/types'
 import { useProgressTracker } from './hooks/useProgressTracker'
 import { useRipple } from './hooks/useRipple'
 import { useUserProfile } from './hooks/useUserProfile'
+import { IconCheck, IconSearch, IconStar } from './components/GuideIcons'
 import { smoothScrollToElement } from './utils/smoothScroll'
 import './App.css'
 
@@ -115,11 +116,20 @@ function App() {
     return guideItems
       .map((item, i) => {
         if (item.kind === 'section-header') return null
-        if (item.kind === 'step') return { index: i, id: item.step.id, label: String(item.stepIndex + 1) }
-        if (item.kind === 'cert') return { index: i, id: `cert-${item.certId}`, label: '★' }
-        return { index: i, id: 'find-contracts-section', label: '🔍' }
+        if (item.kind === 'step')
+          return { index: i, id: item.step.id, kind: 'step' as const, label: String(item.stepIndex + 1) }
+        if (item.kind === 'cert')
+          return { index: i, id: `cert-${item.certId}`, kind: 'cert' as const }
+        if (item.kind === 'find-contracts')
+          return { index: i, id: 'find-contracts-section', kind: 'find' as const }
+        return null
       })
-      .filter(Boolean) as { index: number; id: string; label: string }[]
+      .filter(Boolean) as {
+        index: number
+        id: string
+        kind: 'step' | 'cert' | 'find'
+        label?: string
+      }[]
   }, [guideItems])
 
   const scrollToItem = useCallback((index: number) => {
@@ -233,7 +243,15 @@ function App() {
                 aria-label={`Go to ${nav.id}`}
                 aria-current={nav.index === activeIndex ? 'step' : undefined}
               >
-                {completed.has(nav.id) ? '✓' : nav.label}
+                {completed.has(nav.id) ? (
+                  <IconCheck />
+                ) : nav.kind === 'cert' ? (
+                  <IconStar />
+                ) : nav.kind === 'find' ? (
+                  <IconSearch />
+                ) : (
+                  nav.label
+                )}
               </button>
             ))}
           </nav>
