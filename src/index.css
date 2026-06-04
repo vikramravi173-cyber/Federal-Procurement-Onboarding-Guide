@@ -327,11 +327,10 @@ input:checked + .checkbox-ui .check-draw,
   .star-field,
   .hero-scroll-indicator,
   .mistake-callout-header svg,
-  .gold-moon__corona {
+  .gold-sun__aura,
+  .gold-sun__rays--far,
+  .gold-sun__rays--mid,
+  .gold-sun__frame {
     animation: none !important;
-  }
-
-  .gold-moon--vitruvian .gold-moon__sphere {
-    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.15));
   }
 }
