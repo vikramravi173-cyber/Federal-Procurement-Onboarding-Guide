@@ -16,7 +16,7 @@ export function IntakeSpaceBackground() {
       <GoldSun />
       <StarField className="hero-star-field" density={1.25} />
       <ParticleNetwork className="hero-particles" twinkle />
-      <VectorShootingStars maxActive={8} minInterval={700} maxInterval={1800} />
+      <VectorShootingStars maxActive={2} minInterval={5500} maxInterval={13000} />
       <div className="hero-bg-vignette" />
     </div>
   )

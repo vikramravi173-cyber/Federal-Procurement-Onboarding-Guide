@@ -217,7 +217,7 @@ function App() {
         onResetProfile={handleReset}
       />
 
-      <FlowingLinesDivider />
+      <FlowingLinesDivider variant="rich" />
 
       <div className="sticky-bar">
         <ProgressBar
@@ -278,6 +278,8 @@ function App() {
         </div>
       </div>
 
+      <FlowingLinesDivider variant="subtle" />
+
       <main className="steps-container">
         {guideItems.map((item, index) => {
           if (item.kind === 'cert' && certIndices[0] === index) {
@@ -310,6 +312,7 @@ function App() {
                     )
                   })}
                 </div>
+                <FlowingLinesDivider variant="subtle" />
               </div>
             )
           }
@@ -326,7 +329,7 @@ function App() {
           if (item.kind === 'section-header') {
             return (
               <div key={wrapKey}>
-                <FlowingLinesDivider />
+                <FlowingLinesDivider variant="rich" />
                 <div className="section-header reveal reveal--visible">
                   <h2>{item.title}</h2>
                   <p>{item.subtitle}</p>
@@ -366,10 +369,15 @@ function App() {
                   onFocus={() => setActiveIndex(index)}
                 />
               )}
+              {(item.kind === 'step' || item.kind === 'find-contracts') && (
+                <FlowingLinesDivider variant="subtle" />
+              )}
             </div>
           )
         })}
       </main>
+
+      <FlowingLinesDivider variant="rich" />
 
       <footer className="nav-footer">
         <button

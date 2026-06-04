@@ -7,19 +7,6 @@
   stroke-linejoin: round;
 }
 
-/* Hero Capitol — 3.5s pen trace on load */
-.capitol-drawing {
-  width: min(92vw, 720px);
-  height: auto;
-  opacity: 0.42;
-  filter: drop-shadow(0 0 24px rgba(212, 175, 55, 0.15));
-}
-
-.capitol-drawing .draw-stroke {
-  stroke: var(--accent-light, #f0d78c);
-  stroke-width: 1.35;
-}
-
 /* Gold sun — rays draw in on load */
 .gold-sun__ray-draw {
   fill: none;
@@ -64,26 +51,28 @@
 
 .vector-shooting-star {
   fill: none;
-  stroke: var(--accent-light, #f0d78c);
   stroke-linecap: round;
-  stroke-width: 1.5;
-  stroke-dasharray: var(--star-len);
+  stroke-width: var(--star-width, 0.4);
+  stroke-dasharray: var(--head-len) calc(var(--star-len) - var(--head-len));
   stroke-dashoffset: var(--star-len);
   opacity: 0;
-  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
-  animation: vectorStarShoot var(--star-dur, 0.9s) ease-out forwards;
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.25));
+  animation: meteorSweep var(--star-dur, 1.4s) cubic-bezier(0.22, 0.05, 0.25, 1) forwards;
 }
 
-@keyframes vectorStarShoot {
+@keyframes meteorSweep {
   0% {
     stroke-dashoffset: var(--star-len);
     opacity: 0;
   }
-  18% {
-    opacity: 1;
+  6% {
+    opacity: 0.75;
+  }
+  35% {
+    opacity: 0.55;
   }
   100% {
-    stroke-dashoffset: 0;
+    stroke-dashoffset: calc(-1 * var(--head-len));
     opacity: 0;
   }
 }
@@ -134,6 +123,55 @@
   stroke-width: 0.75;
 }
 
+.flowing-lines__path--delay-3 {
+  animation-delay: -9s;
+  opacity: 0.4;
+  stroke-width: 0.85;
+}
+
+.flowing-lines__path--delay-4 {
+  animation-delay: -18s;
+  opacity: 0.3;
+  stroke-width: 0.65;
+}
+
+.flowing-lines__path--delay-5 {
+  animation-delay: -21s;
+  opacity: 0.25;
+  stroke-width: 0.55;
+}
+
+.flowing-lines--rich {
+  height: 64px;
+  opacity: 0.5;
+}
+
+.flowing-lines-wrap--subtle .flowing-lines {
+  height: 40px;
+  margin: 0.75rem 0;
+  opacity: 0.32;
+}
+
+.flowing-lines-wrap--rich .flowing-lines {
+  margin: 2rem 0;
+}
+
+.flowing-lines-wrap--hero {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10%;
+  z-index: 1;
+  pointer-events: none;
+  padding: 0;
+}
+
+.flowing-lines-wrap--hero .flowing-lines {
+  height: 72px;
+  margin: 0;
+  opacity: 0.38;
+}
+
 @keyframes flowDash {
   to {
     stroke-dashoffset: -240;
@@ -141,7 +179,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .capitol-drawing .draw-stroke,
   .gold-sun--drawn .gold-sun__ray-draw,
   .gold-sun--drawn .gold-sun__disc-draw,
   .gold-sun--drawn .gold-sun__frame-draw,

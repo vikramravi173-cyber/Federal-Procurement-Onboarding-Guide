@@ -11,7 +11,7 @@ export function HeroBackground() {
       <GoldSun />
       <StarField className="hero-star-field" density={1.15} />
       <ParticleNetwork className="hero-particles" twinkle />
-      <VectorShootingStars maxActive={7} minInterval={800} maxInterval={2000} />
+      <VectorShootingStars maxActive={2} minInterval={5000} maxInterval={12000} />
       <div className="hero-bg-vignette" />
     </div>
   )
