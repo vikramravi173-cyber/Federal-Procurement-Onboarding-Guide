@@ -85,51 +85,35 @@
   inset: -45%;
   background: radial-gradient(
     circle at 52% 48%,
-    rgba(255, 235, 180, 0.14) 0%,
-    rgba(212, 175, 55, 0.06) 32%,
-    rgba(180, 140, 40, 0.02) 50%,
-    transparent 68%
+    rgba(232, 220, 200, 0.12) 0%,
+    rgba(212, 175, 55, 0.05) 35%,
+    transparent 70%
   );
-  filter: blur(28px);
+  filter: blur(32px);
 }
 
 .gold-moon__corona--mid {
   inset: -22%;
   background: radial-gradient(
-    circle at 50% 46%,
-    rgba(255, 248, 220, 0.22) 0%,
-    rgba(212, 175, 55, 0.1) 38%,
-    transparent 62%
+    circle at 68% 42%,
+    rgba(255, 252, 245, 0.18) 0%,
+    rgba(232, 220, 200, 0.08) 40%,
+    transparent 65%
   );
-  filter: blur(14px);
+  filter: blur(16px);
   animation-delay: -2s;
 }
 
 .gold-moon__corona--inner {
   inset: -6%;
   background: radial-gradient(
-    circle at 44% 40%,
-    rgba(255, 252, 240, 0.35) 0%,
-    rgba(240, 215, 140, 0.15) 45%,
-    transparent 58%
+    circle at 70% 40%,
+    rgba(255, 252, 248, 0.28) 0%,
+    rgba(232, 220, 200, 0.1) 48%,
+    transparent 60%
   );
-  filter: blur(6px);
+  filter: blur(8px);
   animation-delay: -4s;
-}
-
-.gold-moon__atmosphere {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 38% 34%,
-    transparent 42%,
-    rgba(212, 175, 55, 0.08) 58%,
-    rgba(255, 248, 230, 0.12) 62%,
-    transparent 66%
-  );
-  filter: blur(2px);
-  opacity: 0.85;
 }
 
 .gold-moon__sphere {
@@ -137,20 +121,22 @@
   z-index: 1;
   width: 100%;
   height: 100%;
-  opacity: 0.92;
+  opacity: 0.96;
+  filter: drop-shadow(0 0 24px rgba(232, 220, 200, 0.2))
+    drop-shadow(0 0 48px rgba(212, 175, 55, 0.12));
   mask-image: radial-gradient(
     circle at 50% 50%,
     #000 0%,
-    #000 52%,
-    rgba(0, 0, 0, 0.6) 68%,
-    transparent 82%
+    #000 58%,
+    rgba(0, 0, 0, 0.5) 74%,
+    transparent 88%
   );
   -webkit-mask-image: radial-gradient(
     circle at 50% 50%,
     #000 0%,
-    #000 52%,
-    rgba(0, 0, 0, 0.6) 68%,
-    transparent 82%
+    #000 58%,
+    rgba(0, 0, 0, 0.5) 74%,
+    transparent 88%
   );
 }
 
