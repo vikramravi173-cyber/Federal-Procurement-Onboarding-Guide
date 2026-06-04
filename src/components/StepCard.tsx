@@ -1,11 +1,15 @@
+import { useState } from 'react'
 import type { OnboardingStep } from '../data/types'
 import { capabilityStatementMustInclude } from '../data/steps'
+import { useInView } from '../hooks/useInView'
+import { useRipple } from '../hooks/useRipple'
 
 interface StepCardProps {
   step: OnboardingStep
   index: number
   isCompleted: boolean
   isActive: boolean
+  isLocked: boolean
   onToggle: () => void
   onFocus: () => void
 }
@@ -15,45 +19,70 @@ export function StepCard({
   index,
   isCompleted,
   isActive,
+  isLocked,
   onToggle,
   onFocus,
 }: StepCardProps) {
+  const { ref, inView } = useInView<HTMLElement>()
+  const ripple = useRipple()
+  const [justCompleted, setJustCompleted] = useState(false)
   const isCapability = step.id === 'capability-statement'
+
+  const handleToggle = () => {
+    if (!isCompleted) setJustCompleted(true)
+    onToggle()
+  }
 
   return (
     <article
-      className={`step-card${isCompleted ? ' step-card--completed' : ''}${isActive ? ' step-card--active' : ''}`}
+      ref={ref}
+      className={`step-card glass-card reveal${inView ? ' reveal--visible' : ''}${isCompleted ? ' step-card--completed' : ''}${isActive ? ' step-card--active' : ''}${isLocked ? ' step-card--locked' : ''}${justCompleted && isCompleted ? ' step-card--pop' : ''}`}
       id={`step-${step.id}`}
       onClick={onFocus}
     >
+      <span className="step-watermark" aria-hidden="true">
+        {index + 1}
+      </span>
+
+      {isLocked && (
+        <div className="step-lock-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </div>
+      )}
+
       <div className="step-card-header">
         <div className="step-number" aria-hidden="true">
           {isCompleted ? (
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <polyline points="20 6 9 17 4 12" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="check-pop">
+              <polyline points="20 6 9 17 4 12" className="check-draw" />
             </svg>
           ) : (
             index + 1
           )}
         </div>
-        <h2 className="step-title">{step.title}</h2>
+        <h2 className="step-title">
+          {step.title}
+          <span className="time-pill" data-tooltip={step.timeEstimate}>
+            {step.timeEstimate.split('(')[0].trim().slice(0, 28)}
+            {step.timeEstimate.length > 28 ? '…' : ''}
+          </span>
+        </h2>
         <label className="step-checkbox" onClick={(e) => e.stopPropagation()}>
           <input
             type="checkbox"
             checked={isCompleted}
-            onChange={onToggle}
+            onChange={handleToggle}
             aria-label={`Mark step ${index + 1} as complete`}
           />
-          <span className="checkbox-ui" />
+          <span className="checkbox-ui">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden="true">
+              <polyline points="20 6 9 17 4 12" className="check-draw" />
+            </svg>
+          </span>
         </label>
-      </div>
-
-      <div className="time-estimate">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" />
-          <polyline points="12 6 12 12 16 14" />
-        </svg>
-        Estimated time: {step.timeEstimate}
       </div>
 
       <div className="step-explanation-block">
@@ -71,7 +100,7 @@ export function StepCard({
       </div>
 
       {isCapability && (
-        <div className="capability-details">
+        <div className="capability-details glass-card-inner">
           <h3>What a Capability Statement Must Include</h3>
           <ul>
             {capabilityStatementMustInclude.map((item) => (
@@ -87,11 +116,14 @@ export function StepCard({
       )}
 
       <a
-        className="gov-link"
+        className="gov-link btn-ripple"
         href={step.govLink.url}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.stopPropagation()
+          ripple(e)
+        }}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
@@ -113,7 +145,7 @@ export function StepCard({
         <p>{step.whyItMatters}</p>
       </aside>
 
-      <aside className="mistake-callout">
+      <aside className={`mistake-callout${isActive ? ' mistake-callout--visible' : ''}`}>
         <div className="mistake-callout-header">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />

@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CertificationCard } from './components/CertificationCard'
+import { CompletionModal } from './components/CompletionModal'
 import { FindContractsSection } from './components/FindContractsSection'
 import { Glossary } from './components/Glossary'
+import { HeroSection } from './components/HeroSection'
 import { IntakeForm } from './components/IntakeForm'
 import { ProgressBar } from './components/ProgressBar'
 import { StepCard } from './components/StepCard'
@@ -17,6 +19,7 @@ import {
 } from './data/personalization'
 import type { OnboardingStep } from './data/types'
 import { useProgressTracker } from './hooks/useProgressTracker'
+import { useRipple } from './hooks/useRipple'
 import { useUserProfile } from './hooks/useUserProfile'
 import './App.css'
 
@@ -29,7 +32,9 @@ type GuideItem =
 function App() {
   const { profile, intakeComplete, saveProfile, resetProfile } = useUserProfile()
   const [glossaryOpen, setGlossaryOpen] = useState(false)
+  const [completionDismissed, setCompletionDismissed] = useState(false)
   const cardRefs = useRef<(HTMLElement | null)[]>([])
+  const ripple = useRipple()
 
   const steps = useMemo(
     () => (profile ? getPersonalizedSteps(profile) : []),
@@ -130,7 +135,23 @@ function App() {
   const handleReset = () => {
     reset()
     resetProfile()
+    setCompletionDismissed(false)
   }
+
+  const completedLabels = useMemo(() => {
+    if (!profile) return []
+    return trackableIds
+      .filter((id) => completed.has(id))
+      .map((id) => {
+        if (id === 'find-contracts-section') return 'Find Contracts'
+        if (id.startsWith('cert-')) {
+          const cert = certs.find((c) => `cert-${c.id}` === id)
+          return cert?.title ?? id
+        }
+        const step = steps.find((s) => s.id === id)
+        return step?.title ?? id
+      })
+  }, [trackableIds, completed, steps, certs, profile])
 
   if (!intakeComplete || !profile) {
     return <IntakeForm onComplete={saveProfile} />
@@ -139,6 +160,12 @@ function App() {
   const activeNavPosition = navigableIndices.indexOf(activeIndex)
   const canGoBack = activeNavPosition > 0
   const canGoForward = activeNavPosition >= 0 && activeNavPosition < navigableIndices.length - 1
+
+  const isLocked = (index: number) => {
+    const navPos = navigableIndices.indexOf(index)
+    if (navPos < 0) return false
+    return navPos > activeNavPosition
+  }
 
   const goPrev = () => {
     if (canGoBack) scrollToItem(navigableIndices[activeNavPosition - 1])
@@ -152,22 +179,26 @@ function App() {
     resetProfile()
   }
 
+  const certIndices = guideItems
+    .map((item, i) => (item.kind === 'cert' ? i : null))
+    .filter((i): i is number => i !== null)
+
+  const showCompletionModal = allComplete && !completionDismissed
+
   return (
     <div className="app">
-      <header className="hero">
-        <div className="hero-badge">Personalized Guide</div>
-        <h1>Federal Contract Procurement Guide for Small Businesses</h1>
-        <p className="hero-subtitle">
-          Your roadmap as a {getStructureLabel(profile.businessStructure)} in{' '}
-          {getIndustryLabel(profile.industry)}
-          {profile.designation !== 'none' && (
-            <> · {getDesignationLabel(profile.designation)}</>
-          )}
-        </p>
-        <button type="button" className="reset-profile-btn" onClick={handleReset}>
-          Retake intake
-        </button>
-      </header>
+      <HeroSection
+        subtitle={
+          <>
+            Your roadmap as a {getStructureLabel(profile.businessStructure)} in{' '}
+            {getIndustryLabel(profile.industry)}
+            {profile.designation !== 'none' && (
+              <> · {getDesignationLabel(profile.designation)}</>
+            )}
+          </>
+        }
+        onResetProfile={handleReset}
+      />
 
       <div className="sticky-bar">
         <ProgressBar
@@ -178,8 +209,12 @@ function App() {
         <div className="sticky-nav-row">
           <button
             type="button"
-            className="nav-btn nav-btn--compact"
-            onClick={activeNavPosition <= 0 ? goBackToIntake : goPrev}
+            className="nav-btn nav-btn--compact btn-ripple"
+            onClick={(e) => {
+              ripple(e)
+              if (activeNavPosition <= 0) goBackToIntake()
+              else goPrev()
+            }}
             aria-label={activeNavPosition <= 0 ? 'Back to intake questions' : 'Previous step'}
           >
             ← Back
@@ -189,8 +224,11 @@ function App() {
               <button
                 key={nav.id}
                 type="button"
-                className={`step-dot${nav.index === activeIndex ? ' step-dot--active' : ''}${completed.has(nav.id) ? ' step-dot--done' : ''}`}
-                onClick={() => scrollToItem(nav.index)}
+                className={`step-dot btn-ripple${nav.index === activeIndex ? ' step-dot--active' : ''}${completed.has(nav.id) ? ' step-dot--done' : ''}`}
+                onClick={(e) => {
+                  ripple(e)
+                  scrollToItem(nav.index)
+                }}
                 aria-label={`Go to ${nav.id}`}
                 aria-current={nav.index === activeIndex ? 'step' : undefined}
               >
@@ -200,8 +238,11 @@ function App() {
           </nav>
           <button
             type="button"
-            className="nav-btn nav-btn--compact nav-btn--primary"
-            onClick={goNext}
+            className="nav-btn nav-btn--compact nav-btn--primary btn-ripple"
+            onClick={(e) => {
+              ripple(e)
+              goNext()
+            }}
             disabled={!canGoForward}
             aria-label="Next step"
           >
@@ -211,57 +252,96 @@ function App() {
       </div>
 
       <main className="steps-container">
-        {guideItems.map((item, index) => (
-          <div
-            key={item.kind === 'section-header' ? item.id : item.kind === 'step' ? item.step.id : item.kind === 'cert' ? item.certId : 'find'}
-            ref={(el) => {
-              if (item.kind !== 'section-header') cardRefs.current[index] = el
-            }}
-          >
-            {item.kind === 'section-header' && (
-              <div className="section-header">
-                <h2>{item.title}</h2>
-                <p>{item.subtitle}</p>
+        {guideItems.map((item, index) => {
+          if (item.kind === 'cert' && certIndices[0] === index) {
+            return (
+              <div
+                key="cert-scroll"
+                className="cert-scroll-section"
+                ref={(el) => {
+                  certIndices.forEach((ci) => {
+                    cardRefs.current[ci] = el
+                  })
+                }}
+              >
+                <div className="cert-scroll-track">
+                  {certIndices.map((ci) => {
+                    const certItem = guideItems[ci] as Extract<GuideItem, { kind: 'cert' }>
+                    const track = certs[certItem.certIndex]
+                    return (
+                      <CertificationCard
+                        key={track.id}
+                        track={track}
+                        isRecommended={isRecommendedCert(track, profile)}
+                        isCompleted={completed.has(`cert-${track.id}`)}
+                        isActive={ci === activeIndex}
+                        isLocked={isLocked(ci)}
+                        onToggle={() => toggle(`cert-${track.id}`)}
+                        onFocus={() => setActiveIndex(ci)}
+                      />
+                    )
+                  })}
+                </div>
               </div>
-            )}
-            {item.kind === 'step' && (
-              <StepCard
-                step={item.step}
-                index={item.stepIndex}
-                isCompleted={completed.has(item.step.id)}
-                isActive={index === activeIndex}
-                onToggle={() => toggle(item.step.id)}
-                onFocus={() => setActiveIndex(index)}
-              />
-            )}
-            {item.kind === 'cert' && (
-              <CertificationCard
-                track={certs[item.certIndex]}
-                isRecommended={isRecommendedCert(certs[item.certIndex], profile)}
-                isCompleted={completed.has(`cert-${certs[item.certIndex].id}`)}
-                isActive={index === activeIndex}
-                onToggle={() => toggle(`cert-${certs[item.certIndex].id}`)}
-                onFocus={() => setActiveIndex(index)}
-              />
-            )}
-            {item.kind === 'find-contracts' && (
-              <FindContractsSection
-                tools={findContractTools}
-                isCompleted={completed.has('find-contracts-section')}
-                isActive={index === activeIndex}
-                onToggle={() => toggle('find-contracts-section')}
-                onFocus={() => setActiveIndex(index)}
-              />
-            )}
-          </div>
-        ))}
+            )
+          }
+
+          if (item.kind === 'cert') return null
+
+          return (
+            <div
+              key={
+                item.kind === 'section-header'
+                  ? item.id
+                  : item.kind === 'step'
+                    ? item.step.id
+                    : 'find'
+              }
+              ref={(el) => {
+                if (item.kind !== 'section-header') cardRefs.current[index] = el
+              }}
+            >
+              {item.kind === 'section-header' && (
+                <div className="section-header reveal reveal--visible">
+                  <h2>{item.title}</h2>
+                  <p>{item.subtitle}</p>
+                </div>
+              )}
+              {item.kind === 'step' && (
+                <StepCard
+                  step={item.step}
+                  index={item.stepIndex}
+                  isCompleted={completed.has(item.step.id)}
+                  isActive={index === activeIndex}
+                  isLocked={isLocked(index)}
+                  onToggle={() => toggle(item.step.id)}
+                  onFocus={() => setActiveIndex(index)}
+                />
+              )}
+              {item.kind === 'find-contracts' && (
+                <FindContractsSection
+                  tools={findContractTools}
+                  isCompleted={completed.has('find-contracts-section')}
+                  isActive={index === activeIndex}
+                  isLocked={isLocked(index)}
+                  onToggle={() => toggle('find-contracts-section')}
+                  onFocus={() => setActiveIndex(index)}
+                />
+              )}
+            </div>
+          )
+        })}
       </main>
 
       <footer className="nav-footer">
         <button
           type="button"
-          className="nav-btn"
-          onClick={activeNavPosition <= 0 ? goBackToIntake : goPrev}
+          className="nav-btn btn-ripple"
+          onClick={(e) => {
+            ripple(e)
+            if (activeNavPosition <= 0) goBackToIntake()
+            else goPrev()
+          }}
         >
           ← Back
         </button>
@@ -269,24 +349,28 @@ function App() {
           Step {activeNavPosition + 1} of {navigableIndices.length} · {completedCount} of{' '}
           {trackableIds.length} complete
         </span>
-        <button type="button" className="nav-btn nav-btn--primary" onClick={goNext} disabled={!canGoForward}>
+        <button
+          type="button"
+          className="nav-btn nav-btn--primary btn-ripple"
+          onClick={(e) => {
+            ripple(e)
+            goNext()
+          }}
+          disabled={!canGoForward}
+        >
           Next →
         </button>
       </footer>
 
       <Glossary open={glossaryOpen} onToggle={() => setGlossaryOpen((o) => !o)} />
 
-      {allComplete && (
-        <div className="completion-banner" role="status">
-          <span>🎉</span>
-          <div>
-            <strong>You&apos;ve completed your roadmap!</strong>
-            <p>You&apos;re ready to pursue federal contracts. Good luck!</p>
-          </div>
-          <button type="button" className="reset-btn" onClick={handleReset}>
-            Start over
-          </button>
-        </div>
+      {showCompletionModal && (
+        <CompletionModal
+          profile={profile}
+          completedItems={completedLabels}
+          onClose={() => setCompletionDismissed(true)}
+          onStartOver={handleReset}
+        />
       )}
     </div>
   )

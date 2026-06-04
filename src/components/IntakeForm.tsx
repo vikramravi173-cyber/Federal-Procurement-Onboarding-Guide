@@ -6,34 +6,35 @@ import type {
   IndustryCategory,
   UserProfile,
 } from '../data/types'
+import { useRipple } from '../hooks/useRipple'
 
 interface IntakeFormProps {
   onComplete: (profile: UserProfile) => void
 }
 
-const structures: { value: BusinessStructure; label: string }[] = [
-  { value: 'sole-proprietor', label: 'Sole Proprietor' },
-  { value: 'llc', label: 'LLC' },
-  { value: 's-corp', label: 'S-Corp' },
-  { value: 'c-corp', label: 'C-Corp' },
+const structures: { value: BusinessStructure; label: string; icon: string }[] = [
+  { value: 'sole-proprietor', label: 'Sole Proprietor', icon: '👤' },
+  { value: 'llc', label: 'LLC', icon: '🏢' },
+  { value: 's-corp', label: 'S-Corp', icon: '📊' },
+  { value: 'c-corp', label: 'C-Corp', icon: '🏛️' },
 ]
 
-const industries: { value: IndustryCategory; label: string }[] = [
-  { value: 'construction', label: 'Construction' },
-  { value: 'it-tech', label: 'IT / Tech' },
-  { value: 'professional-services', label: 'Professional Services' },
-  { value: 'manufacturing', label: 'Manufacturing' },
-  { value: 'healthcare', label: 'Healthcare' },
-  { value: 'other', label: 'Other' },
+const industries: { value: IndustryCategory; label: string; icon: string }[] = [
+  { value: 'construction', label: 'Construction', icon: '🏗️' },
+  { value: 'it-tech', label: 'IT / Tech', icon: '💻' },
+  { value: 'professional-services', label: 'Professional Services', icon: '📋' },
+  { value: 'manufacturing', label: 'Manufacturing', icon: '⚙️' },
+  { value: 'healthcare', label: 'Healthcare', icon: '🏥' },
+  { value: 'other', label: 'Other', icon: '✨' },
 ]
 
-const designations: { value: BusinessDesignation; label: string }[] = [
-  { value: 'none', label: 'None / Not sure yet' },
-  { value: 'veteran', label: 'Veteran-Owned (SDVOSB / VOSB)' },
-  { value: 'woman-owned', label: 'Woman-Owned (WOSB)' },
-  { value: 'minority-owned', label: 'Minority-Owned (8(a) eligible)' },
-  { value: 'hubzone', label: 'HUBZone Located' },
-  { value: 'multiple', label: 'Multiple Designations' },
+const designations: { value: BusinessDesignation; label: string; icon: string }[] = [
+  { value: 'none', label: 'None / Not sure yet', icon: '❓' },
+  { value: 'veteran', label: 'Veteran-Owned (SDVOSB / VOSB)', icon: '🎖️' },
+  { value: 'woman-owned', label: 'Woman-Owned (WOSB)', icon: '👩‍💼' },
+  { value: 'minority-owned', label: 'Minority-Owned (8(a) eligible)', icon: '🤝' },
+  { value: 'hubzone', label: 'HUBZone Located', icon: '📍' },
+  { value: 'multiple', label: 'Multiple Designations', icon: '⭐' },
 ]
 
 const multiOptions: { value: CertificationId; label: string }[] = [
@@ -46,10 +47,12 @@ const multiOptions: { value: CertificationId; label: string }[] = [
 
 export function IntakeForm({ onComplete }: IntakeFormProps) {
   const [step, setStep] = useState(0)
+  const [slideDir, setSlideDir] = useState<'forward' | 'back'>('forward')
   const [structure, setStructure] = useState<BusinessStructure | null>(null)
   const [industry, setIndustry] = useState<IndustryCategory | null>(null)
   const [designation, setDesignation] = useState<BusinessDesignation | null>(null)
   const [multipleDesignations, setMultipleDesignations] = useState<CertificationId[]>([])
+  const ripple = useRipple()
 
   const questions = [
     {
@@ -76,11 +79,18 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
   ]
 
   const current = questions[step]
-  const canAdvance = current.value !== null && (step < 2 || designation !== 'multiple' || multipleDesignations.length > 0)
+  const canAdvance =
+    current.value !== null &&
+    (step < 2 || designation !== 'multiple' || multipleDesignations.length > 0)
+
+  const goToStep = (next: number) => {
+    setSlideDir(next > step ? 'forward' : 'back')
+    setStep(next)
+  }
 
   const handleNext = () => {
     if (step < 2) {
-      setStep(step + 1)
+      goToStep(step + 1)
     } else if (structure && industry && designation) {
       onComplete({
         businessStructure: structure,
@@ -98,77 +108,113 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
   }
 
   return (
-    <div className="intake">
-      <div className="intake-header">
-        <div className="hero-badge">Getting Started</div>
-        <h1>Federal Contract Procurement Guide for Small Businesses</h1>
-        <p className="hero-subtitle">
-          Answer 3 quick questions so we can personalize your roadmap.
-        </p>
-      </div>
+    <div className="intake-modal-overlay">
+      <div className="intake-modal glass-card" role="dialog" aria-modal="true" aria-labelledby="intake-title">
+        <div className="intake-header">
+          <div className="hero-badge">Getting Started</div>
+          <h1 id="intake-title">Federal Contract Procurement Guide for Small Businesses</h1>
+          <p className="hero-subtitle">
+            Answer 3 quick questions so we can personalize your roadmap.
+          </p>
+        </div>
 
-      <div className="intake-progress">
-        {questions.map((_, i) => (
-          <div
-            key={i}
-            className={`intake-dot${i === step ? ' intake-dot--active' : ''}${i < step ? ' intake-dot--done' : ''}`}
-          />
-        ))}
-      </div>
-
-      <div className="intake-card">
-        <h2>{current.title}</h2>
-        <p className="intake-subtitle">{current.subtitle}</p>
-
-        <div className="intake-options">
-          {current.options.map((opt) => (
-            <button
-              key={opt.value}
-              type="button"
-              className={`intake-option${current.value === opt.value ? ' intake-option--selected' : ''}`}
-              onClick={() => current.setValue(opt.value as never)}
-            >
-              {opt.label}
-            </button>
+        <div className="intake-progress">
+          {questions.map((_, i) => (
+            <div
+              key={i}
+              className={`intake-dot${i === step ? ' intake-dot--active' : ''}${i < step ? ' intake-dot--done' : ''}`}
+            />
           ))}
         </div>
 
-        {step === 2 && designation === 'multiple' && (
-          <div className="intake-multi">
-            <p className="intake-multi-label">Select all that apply:</p>
-            <div className="intake-multi-grid">
-              {multiOptions.map((opt) => (
-                <label key={opt.value} className="intake-multi-item">
-                  <input
-                    type="checkbox"
-                    checked={multipleDesignations.includes(opt.value)}
-                    onChange={() => toggleMulti(opt.value)}
-                  />
-                  <span>{opt.label}</span>
-                </label>
+        <div
+          key={step}
+          className={`intake-slide intake-slide--${slideDir}`}
+        >
+          <div className="intake-card glass-card-inner">
+            <h2>{current.title}</h2>
+            <p className="intake-subtitle">{current.subtitle}</p>
+
+            <div className="intake-options">
+              {current.options.map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  className={`intake-option-card${current.value === opt.value ? ' intake-option-card--selected' : ''}`}
+                  onClick={(e) => {
+                    ripple(e)
+                    current.setValue(opt.value as never)
+                  }}
+                >
+                  <span className="intake-option-icon" aria-hidden="true">
+                    {opt.icon}
+                  </span>
+                  <span className="intake-option-label">{opt.label}</span>
+                  {current.value === opt.value && (
+                    <span className="intake-option-check" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                        <polyline points="20 6 9 17 4 12" className="check-draw" />
+                      </svg>
+                    </span>
+                  )}
+                </button>
               ))}
             </div>
-          </div>
-        )}
-      </div>
 
-      <div className="intake-nav">
-        <button
-          type="button"
-          className="nav-btn"
-          onClick={() => setStep(step - 1)}
-          disabled={step === 0}
-        >
-          ← Back
-        </button>
-        <button
-          type="button"
-          className="nav-btn nav-btn--primary intake-next"
-          onClick={handleNext}
-          disabled={!canAdvance}
-        >
-          {step < 2 ? 'Continue →' : 'Build My Roadmap →'}
-        </button>
+            {step === 2 && designation === 'multiple' && (
+              <div className="intake-multi">
+                <p className="intake-multi-label">Select all that apply:</p>
+                <div className="intake-multi-grid">
+                  {multiOptions.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`intake-option-card intake-option-card--compact${multipleDesignations.includes(opt.value) ? ' intake-option-card--selected' : ''}`}
+                      onClick={(e) => {
+                        ripple(e)
+                        toggleMulti(opt.value)
+                      }}
+                    >
+                      <span className="intake-option-label">{opt.label}</span>
+                      {multipleDesignations.includes(opt.value) && (
+                        <span className="intake-option-check" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12" className="check-draw" />
+                          </svg>
+                        </span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="intake-nav">
+          <button
+            type="button"
+            className="nav-btn btn-ripple"
+            onClick={(e) => {
+              ripple(e)
+              goToStep(step - 1)
+            }}
+            disabled={step === 0}
+          >
+            ← Back
+          </button>
+          <button
+            type="button"
+            className="nav-btn nav-btn--primary btn-ripple intake-next"
+            onClick={(e) => {
+              ripple(e)
+              handleNext()
+            }}
+            disabled={!canAdvance}
+          >
+            {step < 2 ? 'Continue →' : 'Build My Roadmap →'}
+          </button>
+        </div>
       </div>
     </div>
   )
