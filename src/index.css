@@ -327,7 +327,7 @@ input:checked + .checkbox-ui .check-draw,
   .star-field,
   .hero-scroll-indicator,
   .mistake-callout-header svg,
-  .gold-moon__glow {
+  .gold-moon__corona {
     animation: none !important;
   }
 }
