@@ -36,88 +36,20 @@
   overflow: hidden;
 }
 
-.hero-bg-gradient {
+.hero-bg-base {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    165deg,
-    #000000 0%,
-    #0c0b09 35%,
-    #141210 55%,
-    #0a0908 80%,
-    #000000 100%
-  );
-  background-size: 200% 200%;
-  animation: heroGradient 18s ease-in-out infinite;
-}
-
-@keyframes heroGradient {
-  0%, 100% { background-position: 0% 40%; }
-  50% { background-position: 100% 60%; }
-}
-
-.hero-bg-doc-lines {
-  position: absolute;
-  inset: 0;
-  opacity: 0.55;
-  background: repeating-linear-gradient(
-    180deg,
-    transparent 0,
-    transparent 42px,
-    rgba(212, 175, 55, 0.04) 42px,
-    rgba(212, 175, 55, 0.04) 43px
-  );
-  mask-image: linear-gradient(180deg, black 0%, black 40%, transparent 95%);
-  -webkit-mask-image: linear-gradient(180deg, black 0%, black 40%, transparent 95%);
-}
-
-.hero-bg-network {
-  position: absolute;
-  inset: 0;
-  opacity: 0.35;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black, transparent);
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black, transparent);
-}
-
-.hero-bg-network svg {
-  width: 100%;
-  height: 100%;
-}
-
-.hero-bg-seal {
-  position: absolute;
-  left: 50%;
-  top: 42%;
-  width: min(520px, 90vw);
-  height: min(520px, 90vw);
-  transform: translate(-50%, -50%);
-  opacity: 0.7;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, #0a0a0a 0%, #000000 70%);
   pointer-events: none;
 }
 
-.hero-bg-seal svg {
-  width: 100%;
-  height: 100%;
-}
-
-.hero-bg-skyline {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 38%;
-  min-height: 160px;
-  opacity: 0.85;
-}
-
-.hero-bg-glow {
+.hero-particles,
+.particle-network {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 55% 45% at 50% 38%, rgba(212, 175, 55, 0.14), transparent 65%),
-    radial-gradient(ellipse 40% 30% at 20% 70%, rgba(212, 175, 55, 0.06), transparent 55%),
-    radial-gradient(ellipse 40% 30% at 80% 65%, rgba(212, 175, 55, 0.06), transparent 55%);
+  width: 100%;
+  height: 100%;
+  display: block;
   pointer-events: none;
 }
 
@@ -125,8 +57,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.65) 0%, transparent 18%, transparent 82%, rgba(0, 0, 0, 0.65) 100%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, transparent 25%, transparent 70%, rgba(0, 0, 0, 0.85) 100%);
+    radial-gradient(ellipse 75% 65% at 50% 45%, transparent 35%, rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.25) 0%, transparent 30%, transparent 72%, rgba(0, 0, 0, 0.75) 100%);
   pointer-events: none;
 }
 
