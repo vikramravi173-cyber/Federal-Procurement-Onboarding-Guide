@@ -74,8 +74,8 @@ function App() {
     items.push({
       kind: 'section-header',
       id: 'cert-header',
-      title: 'Certification Tracks',
-      subtitle: 'Based on your profile, these programs may unlock set-aside contracts and sole-source opportunities.',
+      title: 'Certifications that open set-aside work',
+      subtitle: 'These programs match your profile and can put you in line for contracts reserved for small businesses like yours.',
     })
     certs.forEach((_, i) => {
       items.push({ kind: 'cert', certId: certs[i].id, certIndex: i })
@@ -206,7 +206,7 @@ function App() {
       <HeroSection
         subtitle={
           <>
-            Your roadmap as a {getStructureLabel(profile.businessStructure)} in{' '}
+            Your step-by-step plan as a {getStructureLabel(profile.businessStructure)} in{' '}
             {getIndustryLabel(profile.industry)}
             {profile.designation !== 'none' && (
               <> · {getDesignationLabel(profile.designation)}</>
@@ -216,6 +216,7 @@ function App() {
         onResetProfile={handleReset}
       />
 
+      <div className="site-container">
       <div className="sticky-bar">
         <ProgressBar
           completedCount={completedCount}
@@ -395,6 +396,7 @@ function App() {
           Next →
         </button>
       </footer>
+      </div>
 
       <Glossary open={glossaryOpen} onToggle={() => setGlossaryOpen((o) => !o)} />
 

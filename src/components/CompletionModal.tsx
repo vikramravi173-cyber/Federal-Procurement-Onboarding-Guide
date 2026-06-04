@@ -31,10 +31,10 @@ export function CompletionModal({
     <div className="completion-overlay" role="dialog" aria-modal="true" aria-labelledby="completion-title">
       <div className="completion-modal glass-card">
         <IconCelebration />
-        <h2 id="completion-title">Congratulations!</h2>
+        <h2 id="completion-title">You finished the checklist</h2>
         <p className="completion-modal-lead">
-          You&apos;ve completed your entire federal procurement roadmap. You&apos;re ready to pursue
-          federal contracts.
+          Every step on your roadmap is done. You have what you need to register, find bids, and
+          submit your first proposal.
         </p>
 
         <div className="completion-profile glass-card-inner">
@@ -74,9 +74,9 @@ export function CompletionModal({
             Print / Screenshot
           </button>
           <button type="button" className="btn-ripple nav-btn nav-btn--primary" onClick={onClose}>
-            Continue exploring
+            Keep reading
           </button>
-          <button type="button" className="btn-ripple reset-btn" onClick={onStartOver}>
+          <button type="button" className="btn-ripple btn-ghost reset-btn" onClick={onStartOver}>
             Start over
           </button>
         </div>

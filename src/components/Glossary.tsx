@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState, type MouseEvent } from 'react'
 import { glossaryTerms } from '../data/glossary'
 import { useRipple } from '../hooks/useRipple'
+import { EmptyState } from './EmptyState'
+import { GlossarySkeleton } from './GuideSkeleton'
 
 interface GlossaryProps {
   open: boolean
@@ -10,6 +12,8 @@ interface GlossaryProps {
 export function Glossary({ open, onToggle }: GlossaryProps) {
   const [expandedTerm, setExpandedTerm] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [listReady, setListReady] = useState(true)
+  const loadTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const ripple = useRipple()
 
   const sortedTerms = useMemo(
@@ -25,15 +29,29 @@ export function Glossary({ open, onToggle }: GlossaryProps) {
     )
   }, [search, sortedTerms])
 
+  const scheduleListLoad = useCallback(() => {
+    if (loadTimer.current) clearTimeout(loadTimer.current)
+    setListReady(false)
+    loadTimer.current = setTimeout(() => setListReady(true), 120)
+  }, [])
+
+  const handleFabClick = (e: MouseEvent<HTMLButtonElement>) => {
+    ripple(e)
+    if (!open) scheduleListLoad()
+    onToggle()
+  }
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value)
+    if (open) scheduleListLoad()
+  }
+
   return (
     <>
       <button
         type="button"
-        className="glossary-fab btn-ripple"
-        onClick={(e) => {
-          ripple(e)
-          onToggle()
-        }}
+        className="glossary-fab btn-secondary btn-ripple"
+        onClick={handleFabClick}
         aria-expanded={open}
         aria-label={open ? 'Close glossary' : 'Open glossary'}
       >
@@ -56,7 +74,7 @@ export function Glossary({ open, onToggle }: GlossaryProps) {
               <h2>Glossary</h2>
               <button
                 type="button"
-                className="glossary-close btn-ripple"
+                className="btn-ghost glossary-close btn-ripple"
                 onClick={(e) => {
                   ripple(e)
                   onToggle()
@@ -77,36 +95,48 @@ export function Glossary({ open, onToggle }: GlossaryProps) {
                 className="glossary-search"
                 placeholder="Search terms…"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 aria-label="Search glossary terms"
               />
             </div>
 
             <div className="glossary-list">
-              {filtered.map(({ term, definition }) => {
-                const highlight = search.trim().length > 0
-                return (
-                  <div
-                    key={term}
-                    className={`glossary-item${highlight ? ' glossary-item--highlight' : ''}`}
-                  >
-                    <button
-                      type="button"
-                      className={`glossary-term${expandedTerm === term ? ' glossary-term--open' : ''}`}
-                      onClick={() => setExpandedTerm(expandedTerm === term ? null : term)}
-                      aria-expanded={expandedTerm === term}
+              {!listReady ? (
+                <GlossarySkeleton />
+              ) : filtered.length === 0 ? (
+                <EmptyState
+                  icon={
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <circle cx="11" cy="11" r="8" />
+                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                  }
+                  title="No matches"
+                  message="Try a shorter word or check spelling — acronyms like SAM or FAR work well."
+                />
+              ) : (
+                filtered.map(({ term, definition }) => {
+                  const highlight = search.trim().length > 0
+                  return (
+                    <div
+                      key={term}
+                      className={`glossary-item${highlight ? ' glossary-item--highlight' : ''}`}
                     >
-                      {term}
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                        <polyline points="6 9 12 15 18 9" />
-                      </svg>
-                    </button>
-                    {expandedTerm === term && <p className="glossary-definition">{definition}</p>}
-                  </div>
-                )
-              })}
-              {filtered.length === 0 && (
-                <p className="glossary-empty">No terms match your search.</p>
+                      <button
+                        type="button"
+                        className={`glossary-term${expandedTerm === term ? ' glossary-term--open' : ''}`}
+                        onClick={() => setExpandedTerm(expandedTerm === term ? null : term)}
+                        aria-expanded={expandedTerm === term}
+                      >
+                        {term}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                      </button>
+                      {expandedTerm === term && <p className="glossary-definition">{definition}</p>}
+                    </div>
+                  )
+                })
               )}
             </div>
           </div>

@@ -64,22 +64,22 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
 
   const questions = [
     {
-      title: 'What is your business structure?',
-      subtitle: 'This affects how you register in SAM.gov and what documents you need.',
+      title: 'How is your business set up?',
+      subtitle: 'Your structure changes what you need for SAM.gov and how you sign contracts.',
       options: structures,
       value: structure,
       setValue: setStructure,
     },
     {
-      title: 'What industry best describes your business?',
-      subtitle: 'We will tailor NAICS guidance and opportunity search tips to your sector.',
+      title: 'What does your business do?',
+      subtitle: 'We match NAICS codes and contract search tips to your field.',
       options: industries,
       value: industry,
       setValue: setIndustry,
     },
     {
-      title: 'Do you have a small business designation?',
-      subtitle: 'This determines which certification tracks we highlight for you.',
+      title: 'Any small business certifications?',
+      subtitle: 'We highlight the certification paths that fit you.',
       options: designations,
       value: designation,
       setValue: setDesignation,
@@ -127,10 +127,10 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
         aria-labelledby="intake-title"
       >
         <div className="intake-header">
-          <div className="hero-badge">Getting Started</div>
-          <h1 id="intake-title">Federal Contract Procurement Guide for Small Businesses</h1>
+          <div className="hero-badge">Getting started</div>
+          <h1 id="intake-title">Tell us about your business</h1>
           <p className="hero-subtitle intake-header-tagline">
-            Answer 3 quick questions so we can personalize your roadmap.
+            Three quick questions — then we build your federal contracting checklist.
           </p>
         </div>
 

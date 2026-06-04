@@ -63,7 +63,7 @@ export function CertificationCard({
 
       <button
         type="button"
-        className="cert-learn-more btn-ripple"
+        className="cert-learn-more btn-secondary btn-ripple"
         onClick={(e) => {
           e.stopPropagation()
           ripple(e)

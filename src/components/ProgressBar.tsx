@@ -25,7 +25,7 @@ export function ProgressBar({ completedCount, total, progress }: ProgressBarProp
   return (
     <div className="progress-section" aria-label="Onboarding progress">
       <div className="progress-header">
-        <span className="progress-label">Your Progress</span>
+        <span className="progress-label">Your progress</span>
         <span className="progress-percent" aria-live="polite">
           {percent}%
         </span>

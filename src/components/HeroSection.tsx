@@ -60,15 +60,15 @@ export function HeroSection({ subtitle, onResetProfile }: HeroSectionProps) {
         <HeroBackground />
       </div>
       <div className="hero-content">
-        <div className="hero-badge">Personalized Guide</div>
-        <h1>Federal Contract Procurement Guide for Small Businesses</h1>
+        <div className="hero-badge">Your guide</div>
+        <h1>Win your first federal contract</h1>
         <p className="hero-typing" aria-live="polite">
           <span className="hero-typing-text">{displayText}</span>
           <span className="hero-typing-cursor" aria-hidden="true" />
         </p>
         <p className="hero-subtitle">{subtitle}</p>
-        <button type="button" className="btn-ripple reset-profile-btn" onClick={onResetProfile}>
-          Retake intake
+        <button type="button" className="btn-ripple btn-ghost reset-profile-btn" onClick={onResetProfile}>
+          Change my answers
         </button>
       </div>
       <button

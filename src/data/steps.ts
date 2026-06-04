@@ -3,7 +3,7 @@ import type { OnboardingStep } from './types'
 export const onboardingSteps: OnboardingStep[] = [
   {
     id: 'size-standards',
-    title: 'Confirm Your Business Qualifies as "Small"',
+    title: 'Prove your business counts as "small"',
     explanation:
       'Before pursuing federal contracts, verify that your business meets the SBA size standards for your industry. These limits are based on either average annual revenue or number of employees, depending on your NAICS code. Use the SBA Size Standards Tool to look up your industry and confirm eligibility.',
     timeEstimate: '1–2 hours to research and confirm',
@@ -45,7 +45,7 @@ export const onboardingSteps: OnboardingStep[] = [
   },
   {
     id: 'sam-registration',
-    title: 'Register Your Business on SAM.gov',
+    title: 'Get on SAM.gov so agencies can pay you',
     explanation:
       'SAM.gov (System for Award Management) is the official U.S. government database of vendors. Create an account, complete entity registration, and provide your business details, banking information for electronic payments, and points of contact. Registration is free.',
     timeEstimate: '2–4 hours to complete the application; 7–10 business days to activate after submission',
@@ -80,7 +80,7 @@ export const onboardingSteps: OnboardingStep[] = [
   },
   {
     id: 'uei',
-    title: 'Obtain Your Unique Entity Identifier (UEI)',
+    title: 'Grab your UEI (your government ID number)',
     explanation:
       'The UEI is the official identifier for all entities doing business with the federal government. You receive your UEI automatically when you complete SAM.gov entity registration — no separate application is needed. You will also receive a CAGE code at the same time.',
     timeEstimate: '1–2 business days after SAM.gov registration is submitted (issued automatically)',
@@ -96,7 +96,7 @@ export const onboardingSteps: OnboardingStep[] = [
   },
   {
     id: 'naics',
-    title: 'Identify Your NAICS Codes',
+    title: 'Pick NAICS codes that match what you sell',
     explanation:
       'NAICS (North American Industry Classification System) codes describe what your business does. You will select primary and secondary codes during SAM registration and when responding to solicitations. Choose codes that accurately reflect the products or services you want to sell to the government.',
     timeEstimate: '1–2 hours to research and select the right codes',
@@ -144,7 +144,7 @@ export const onboardingSteps: OnboardingStep[] = [
   },
   {
     id: 'far-basics',
-    title: 'Learn the Basics of Federal Acquisition Rules',
+    title: 'Know the buying rules before you bid',
     explanation:
       'The Federal Acquisition Regulation (FAR) governs how agencies buy goods and services. Key concepts include contract types, small business subcontracting plans, labor standards, and compliance requirements. You do not need to memorize the FAR, but you should understand the rules that apply to any solicitation you pursue.',
     timeEstimate: '2–4 hours for an introductory overview',
@@ -164,7 +164,7 @@ export const onboardingSteps: OnboardingStep[] = [
   },
   {
     id: 'financial-systems',
-    title: 'Set Up Payment & Invoicing Systems',
+    title: 'Set up invoicing so you get paid on time',
     explanation:
       'The government pays electronically through systems like Wide Area Workflow (WAWF) and the Invoice Processing Platform (IPP). You will need a business bank account, proper invoicing procedures, and familiarity with how to submit invoices against contract line items. Some contracts also require performance and payment bonds.',
     timeEstimate: '1–2 weeks to set up accounts and test invoicing workflows',
@@ -185,7 +185,7 @@ export const onboardingSteps: OnboardingStep[] = [
   },
   {
     id: 'capability-statement',
-    title: 'Build Your Capability Statement',
+    title: 'Write a one-page capability statement',
     explanation:
       'A capability statement is a one-page document that serves as your business resume for federal contracting. Contracting officers and prime contractors review capability statements to decide who to invite to bid or subcontract. You will be asked for one before almost any formal opportunity.',
     timeEstimate: '2–4 hours to draft; refine over time as you gain experience',
@@ -211,7 +211,7 @@ export const onboardingSteps: OnboardingStep[] = [
   },
   {
     id: 'submit-bid',
-    title: 'Submit Your First Bid or Proposal',
+    title: 'Send your first bid before the deadline',
     explanation:
       'When you find an opportunity that fits, read the entire solicitation carefully. Note the deadline, required forms, evaluation criteria, and submission method. Prepare your pricing, technical approach, and any required representations and certifications. Submit before the deadline — late bids are never accepted.',
     timeEstimate: '1–4 weeks per solicitation depending on complexity',

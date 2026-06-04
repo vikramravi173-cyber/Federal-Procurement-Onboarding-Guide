@@ -41,7 +41,7 @@ export function FindContractsSection({
               <IconSearch className="guide-icon guide-icon--step" />
             )}
           </div>
-          <h2 className="step-title">Find Contracts</h2>
+          <h2 className="step-title">Find contracts worth bidding on</h2>
           <label className="step-checkbox" onClick={(e) => e.stopPropagation()}>
             <input
               type="checkbox"
@@ -58,8 +58,8 @@ export function FindContractsSection({
         </div>
 
         <p className="step-explanation">
-          Now that your registration foundation is in place, use these three tools to find
-          opportunities and research your market.
+          Your registration basics are in place. Use these three sites to spot open bids and see
+          which agencies buy what you sell.
         </p>
       </article>
 
@@ -73,7 +73,7 @@ export function FindContractsSection({
               {tool.description.split('.')[0]}.
             </p>
             <a
-              className="find-visit-btn btn-ripple"
+              className="find-visit-btn btn-primary btn-ripple"
               href={tool.url}
               target="_blank"
               rel="noopener noreferrer"
