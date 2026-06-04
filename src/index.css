@@ -324,8 +324,10 @@ input:checked + .checkbox-ui .check-draw,
   }
 
   .particle-network,
+  .star-field,
   .hero-scroll-indicator,
-  .mistake-callout-header svg {
+  .mistake-callout-header svg,
+  .gold-moon__glow {
     animation: none !important;
   }
 }

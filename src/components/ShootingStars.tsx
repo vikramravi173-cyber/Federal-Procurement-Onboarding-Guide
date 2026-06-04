@@ -6,45 +6,71 @@ interface StarBurst {
   left: number
   angle: number
   duration: number
+  length: number
+  thickness: number
 }
 
 function randomBetween(min: number, max: number) {
   return min + Math.random() * (max - min)
 }
 
-/** Occasional shooting stars across the space backdrop. */
-export function ShootingStars() {
+interface ShootingStarsProps {
+  /** How many streaks can appear at once */
+  maxActive?: number
+  /** Min ms between spawns */
+  minInterval?: number
+  /** Max ms between spawns */
+  maxInterval?: number
+}
+
+/** Shooting stars across the space backdrop. */
+export function ShootingStars({
+  maxActive = 6,
+  minInterval = 900,
+  maxInterval = 2200,
+}: ShootingStarsProps) {
   const [bursts, setBursts] = useState<StarBurst[]>([])
-  const timeoutRef = useRef(0)
+  const timersRef = useRef<number[]>([])
   const idRef = useRef(0)
 
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reducedMotion) return
 
+    const schedule = (fn: () => void, delay: number) => {
+      const id = window.setTimeout(fn, delay)
+      timersRef.current.push(id)
+    }
+
     const spawn = () => {
       const id = ++idRef.current
       const burst: StarBurst = {
         id,
-        top: randomBetween(8, 55),
-        left: randomBetween(-5, 55),
-        angle: randomBetween(-42, -28),
-        duration: randomBetween(0.65, 0.95),
+        top: randomBetween(4, 72),
+        left: randomBetween(-8, 68),
+        angle: randomBetween(-48, -22),
+        duration: randomBetween(0.55, 1.05),
+        length: randomBetween(100, 180),
+        thickness: randomBetween(1, 2.5),
       }
 
-      setBursts((prev) => [...prev.slice(-2), burst])
+      setBursts((prev) => [...prev.slice(-(maxActive - 1)), burst])
 
-      window.setTimeout(() => {
+      schedule(() => {
         setBursts((prev) => prev.filter((b) => b.id !== id))
-      }, burst.duration * 1000 + 100)
+      }, burst.duration * 1000 + 120)
 
-      timeoutRef.current = window.setTimeout(spawn, randomBetween(4000, 8000))
+      schedule(spawn, randomBetween(minInterval, maxInterval))
     }
 
-    timeoutRef.current = window.setTimeout(spawn, randomBetween(1500, 3500))
+    schedule(spawn, randomBetween(400, 900))
+    schedule(spawn, randomBetween(1000, 1800))
 
-    return () => window.clearTimeout(timeoutRef.current)
-  }, [])
+    return () => {
+      timersRef.current.forEach((t) => window.clearTimeout(t))
+      timersRef.current = []
+    }
+  }, [maxActive, minInterval, maxInterval])
 
   return (
     <div className="shooting-stars" aria-hidden="true">
@@ -55,8 +81,11 @@ export function ShootingStars() {
           style={{
             top: `${burst.top}%`,
             left: `${burst.left}%`,
+            width: `${burst.length}px`,
+            height: `${burst.thickness}px`,
             ['--shoot-angle' as string]: `${burst.angle}deg`,
             ['--shoot-duration' as string]: `${burst.duration}s`,
+            ['--shoot-travel' as string]: `${burst.length + 80}px`,
           }}
         />
       ))}

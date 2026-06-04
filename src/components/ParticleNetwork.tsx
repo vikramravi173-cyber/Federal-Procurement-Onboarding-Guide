@@ -37,13 +37,13 @@ export function ParticleNetwork({ className = '', linkDistance = 130, twinkle = 
     let running = true
 
     const initParticles = (w: number, h: number) => {
-      const count = Math.min(65, Math.max(28, Math.floor((w * h) / 20000)))
+      const count = Math.min(95, Math.max(40, Math.floor((w * h) / 14000)))
       particlesRef.current = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.22,
         vy: (Math.random() - 0.5) * 0.22,
-        r: 1 + Math.random() * 0.6,
+        r: 0.8 + Math.random() * 1.1,
         twinklePhase: Math.random() * Math.PI * 2,
         twinkleSpeed: 0.6 + Math.random() * 1.4,
       }))
