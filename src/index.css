@@ -302,6 +302,11 @@ input:checked + .checkbox-ui .check-draw,
     animation: none;
   }
 
+  .intake-header::after {
+    animation: none;
+    opacity: 0.7;
+  }
+
   .particle-network,
   .hero-scroll-indicator,
   .mistake-callout-header svg {

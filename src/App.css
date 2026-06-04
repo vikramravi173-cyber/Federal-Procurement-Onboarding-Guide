@@ -1101,56 +1101,142 @@ body:has(.hero) {
 .intake-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 35%, rgba(212, 175, 55, 0.08) 0%, transparent 55%),
+    rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(10px);
   z-index: 40;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
+  padding: 1.5rem;
 }
 
 .intake-modal {
-  width: min(640px, 100%);
+  position: relative;
+  width: min(860px, 96vw);
   max-height: 92vh;
   overflow-y: auto;
-  padding: 2rem;
+  padding: clamp(2.25rem, 5vw, 3.25rem) clamp(1.75rem, 4vw, 3rem);
+  border-color: rgba(212, 175, 55, 0.32);
+  box-shadow:
+    0 0 0 1px rgba(212, 175, 55, 0.12),
+    0 0 48px rgba(212, 175, 55, 0.14),
+    0 0 100px rgba(212, 175, 55, 0.07),
+    0 28px 72px rgba(0, 0, 0, 0.7);
+  isolation: isolate;
+}
+
+.intake-modal::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(ellipse 90% 45% at 50% 0%, rgba(212, 175, 55, 0.14) 0%, transparent 62%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.intake-modal > * {
+  position: relative;
+  z-index: 1;
 }
 
 .intake-header {
+  position: relative;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  padding: 0.5rem 0.5rem 1.75rem;
+}
+
+.intake-header::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  width: min(100%, 580px);
+  height: 220px;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.28) 0%, transparent 68%);
+  filter: blur(36px);
+  z-index: -1;
+  pointer-events: none;
+  animation: intakeAuraPulse 5s ease-in-out infinite;
+}
+
+@keyframes intakeAuraPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+
+.intake-header .hero-badge {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1.25rem;
+  margin-bottom: 2rem;
+  box-shadow:
+    0 0 20px rgba(212, 175, 55, 0.25),
+    inset 0 0 12px rgba(212, 175, 55, 0.06);
 }
 
 .intake-header h1 {
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(2.1rem, 6vw, 3.35rem);
   font-weight: 700;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #faf8f2, var(--accent-light), var(--accent));
+  line-height: 1.12;
+  margin-bottom: 1.15rem;
+  max-width: 18ch;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(
+    135deg,
+    #fffef8 0%,
+    var(--accent-light) 38%,
+    var(--accent) 72%,
+    var(--gold-dim) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  filter: drop-shadow(0 0 28px rgba(212, 175, 55, 0.35));
+}
+
+.intake-header .hero-subtitle {
+  font-size: clamp(1.1rem, 2.8vw, 1.45rem);
+  line-height: 1.5;
+  max-width: 36rem;
+  margin: 0 auto;
+  color: var(--accent-light);
+  text-shadow: 0 0 24px rgba(212, 175, 55, 0.2);
 }
 
 .intake-progress {
   display: flex;
   justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1.25rem;
+  gap: 0.65rem;
+  margin-bottom: 1.5rem;
 }
 
 .intake-dot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--navy-700);
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .intake-dot--active {
   background: var(--accent);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
-  transform: scale(1.2);
+  box-shadow:
+    0 0 0 4px rgba(212, 175, 55, 0.28),
+    0 0 14px rgba(212, 175, 55, 0.55);
+  transform: scale(1.3);
 }
 
 .intake-dot--done {
