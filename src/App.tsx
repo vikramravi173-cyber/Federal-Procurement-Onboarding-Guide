@@ -217,8 +217,6 @@ function App() {
         onResetProfile={handleReset}
       />
 
-      <FlowingLinesDivider variant="rich" />
-
       <div className="sticky-bar">
         <ProgressBar
           completedCount={completedCount}
@@ -277,8 +275,6 @@ function App() {
           </button>
         </div>
       </div>
-
-      <FlowingLinesDivider variant="subtle" />
 
       <main className="steps-container">
         {guideItems.map((item, index) => {
