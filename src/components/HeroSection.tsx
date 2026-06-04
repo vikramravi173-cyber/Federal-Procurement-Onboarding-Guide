@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
+import { HeroBackground } from './HeroBackground'
 
 const TYPING_PHRASES = [
   'Register on SAM.gov',
@@ -54,7 +55,9 @@ export function HeroSection({ subtitle, onResetProfile }: HeroSectionProps) {
 
   return (
     <header className="hero">
-      <div className="hero-bg" style={{ transform: 'translateY(var(--parallax-y, 0))' }} aria-hidden="true" />
+      <div className="hero-bg-parallax" style={{ transform: 'translateY(var(--parallax-y, 0))' }}>
+        <HeroBackground />
+      </div>
       <div className="hero-content">
         <div className="hero-badge">Personalized Guide</div>
         <h1>Federal Contract Procurement Guide for Small Businesses</h1>
