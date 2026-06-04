@@ -63,13 +63,13 @@
   z-index: 1;
 }
 
-/* Gold moon — top-right harvest moon with layered aura */
+/* Pencil-study moon — Vitruvian-style graphite on vellum */
 .gold-moon {
   position: absolute;
   top: -14%;
   right: -12%;
-  width: min(44vw, 360px);
-  height: min(44vw, 360px);
+  width: min(46vw, 400px);
+  height: min(46vw, 400px);
   pointer-events: none;
   z-index: 0;
 }
@@ -78,42 +78,27 @@
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  animation: moonCoronaBreathe 10s ease-in-out infinite;
 }
 
-.gold-moon__corona--outer {
-  inset: -45%;
+.gold-moon--pencil .gold-moon__corona--outer {
+  inset: -40%;
   background: radial-gradient(
-    circle at 52% 48%,
-    rgba(232, 220, 200, 0.12) 0%,
-    rgba(212, 175, 55, 0.05) 35%,
-    transparent 70%
+    circle at 55% 45%,
+    rgba(242, 235, 226, 0.1) 0%,
+    rgba(212, 175, 55, 0.04) 40%,
+    transparent 72%
   );
-  filter: blur(32px);
+  filter: blur(36px);
 }
 
-.gold-moon__corona--mid {
-  inset: -22%;
+.gold-moon--pencil .gold-moon__corona--mid {
+  inset: -18%;
   background: radial-gradient(
-    circle at 68% 42%,
-    rgba(255, 252, 245, 0.18) 0%,
-    rgba(232, 220, 200, 0.08) 40%,
-    transparent 65%
+    circle at 62% 38%,
+    rgba(255, 252, 248, 0.14) 0%,
+    transparent 58%
   );
-  filter: blur(16px);
-  animation-delay: -2s;
-}
-
-.gold-moon__corona--inner {
-  inset: -6%;
-  background: radial-gradient(
-    circle at 70% 40%,
-    rgba(255, 252, 248, 0.28) 0%,
-    rgba(232, 220, 200, 0.1) 48%,
-    transparent 60%
-  );
-  filter: blur(8px);
-  animation-delay: -4s;
+  filter: blur(14px);
 }
 
 .gold-moon__sphere {
@@ -121,35 +106,22 @@
   z-index: 1;
   width: 100%;
   height: 100%;
-  opacity: 0.96;
-  filter: drop-shadow(0 0 24px rgba(232, 220, 200, 0.2))
-    drop-shadow(0 0 48px rgba(212, 175, 55, 0.12));
+  opacity: 0.94;
+  filter: drop-shadow(0 0 20px rgba(242, 235, 226, 0.15));
   mask-image: radial-gradient(
     circle at 50% 50%,
     #000 0%,
-    #000 58%,
-    rgba(0, 0, 0, 0.5) 74%,
-    transparent 88%
+    #000 56%,
+    rgba(0, 0, 0, 0.45) 76%,
+    transparent 90%
   );
   -webkit-mask-image: radial-gradient(
     circle at 50% 50%,
     #000 0%,
-    #000 58%,
-    rgba(0, 0, 0, 0.5) 74%,
-    transparent 88%
+    #000 56%,
+    rgba(0, 0, 0, 0.45) 76%,
+    transparent 90%
   );
-}
-
-@keyframes moonCoronaBreathe {
-  0%,
-  100% {
-    opacity: 0.82;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.03);
-  }
 }
 
 .hero-bg-vignette {

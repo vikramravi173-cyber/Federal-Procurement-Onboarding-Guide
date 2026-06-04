@@ -1,157 +1,182 @@
-import { useId } from 'react'
+import { useId, useMemo } from 'react'
+import { buildCurvedHatch, buildParallelHatch } from './moonPencilHatch'
 
-/** Vintage engraved full moon — stippling, maria, and cross-hatched craters. */
+const GRAPHITE = '#3a3630'
+const GRAPHITE_LIGHT = '#5c564c'
+const GRAPHITE_SOFT = '#8a8278'
+const PAPER = '#f2ebe2'
+
+/** Da Vinci–style pencil moon: cross-hatching, sfumato tone, precise contour. */
 export function GoldMoon() {
   const id = useId().replace(/:/g, '')
 
+  const hatchFine = useMemo(() => buildParallelHatch(200, 200, 172, 52, 7), [])
+  const hatchCross = useMemo(() => buildParallelHatch(200, 200, 172, -38, 7), [])
+  const hatchShadowA = useMemo(() => buildParallelHatch(200, 200, 172, 48, 3), [])
+  const hatchShadowB = useMemo(() => buildParallelHatch(200, 200, 172, -42, 3), [])
+  const hatchMariaA = useMemo(() => buildParallelHatch(100, 130, 80, 52, 2.6), [])
+  const hatchMariaB = useMemo(() => buildParallelHatch(100, 130, 80, -40, 2.6), [])
+  const curvedBands = useMemo(() => buildCurvedHatch(200, 200, 168, 14), [])
+
   return (
-    <div className="gold-moon" aria-hidden="true">
+    <div className="gold-moon gold-moon--pencil" aria-hidden="true">
       <div className="gold-moon__corona gold-moon__corona--outer" />
       <div className="gold-moon__corona gold-moon__corona--mid" />
-      <div className="gold-moon__corona gold-moon__corona--inner" />
 
       <svg className="gold-moon__sphere" viewBox="0 0 400 400" fill="none">
         <defs>
-          <pattern
-            id={`${id}-stipple`}
-            width="5"
-            height="5"
-            patternUnits="userSpaceOnUse"
-          >
-            <circle cx="2.5" cy="2.5" r="0.85" fill="#4a4338" opacity="0.55" />
-          </pattern>
-
-          <pattern
-            id={`${id}-stipple-fine`}
-            width="3"
-            height="3"
-            patternUnits="userSpaceOnUse"
-          >
-            <circle cx="1.5" cy="1.5" r="0.45" fill="#5c5346" opacity="0.4" />
-          </pattern>
-
           <clipPath id={`${id}-disc`}>
             <circle cx="200" cy="200" r="168" />
           </clipPath>
 
-          <radialGradient id={`${id}-limb-glow`} cx="72%" cy="38%" r="55%">
-            <stop offset="0%" stopColor="rgba(255, 252, 245, 0.15)" />
-            <stop offset="100%" stopColor="rgba(255, 252, 245, 0)" />
+          <radialGradient id={`${id}-shade-mask`} cx="30%" cy="68%" r="58%">
+            <stop offset="0%" stopColor="white" />
+            <stop offset="55%" stopColor="white" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="black" />
           </radialGradient>
 
-          <filter id={`${id}-moonlight`} x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="2" result="blur" />
-            <feColorMatrix
-              in="blur"
-              type="matrix"
-              values="1 0 0 0 0.92
-                      0.88 0.82 0 0 0.88
-                      0 0 0.55 0 0.35
-                      0 0 0 0.35 0"
-              result="glow"
+          <mask id={`${id}-shade`}>
+            <rect width="400" height="400" fill="black" />
+            <circle cx="200" cy="200" r="168" fill={`url(#${id}-shade-mask)`} />
+          </mask>
+
+          <radialGradient id={`${id}-sfumato`} cx="50%" cy="50%" r="50%">
+            <stop offset="80%" stopColor="#000" stopOpacity="0" />
+            <stop offset="94%" stopColor="#000" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#000" stopOpacity="0.22" />
+          </radialGradient>
+
+          <filter id={`${id}-paper`} x="-8%" y="-8%" width="116%" height="116%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.75"
+              numOctaves="2"
+              seed="8"
+              result="grain"
             />
-            <feMerge>
-              <feMergeNode in="glow" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
+            <feColorMatrix in="grain" type="saturate" values="0" result="gray" />
+            <feComponentTransfer in="gray" result="soft">
+              <feFuncA type="linear" slope="0.05" />
+            </feComponentTransfer>
+            <feBlend in="SourceGraphic" in2="soft" mode="multiply" />
           </filter>
         </defs>
 
-        <g filter={`url(#${id}-moonlight)`} clipPath={`url(#${id}-disc)`}>
-          {/* Parchment highlands */}
-          <circle cx="200" cy="200" r="168" fill="#e8dcc8" />
-          <circle cx="200" cy="200" r="168" fill={`url(#${id}-stipple)`} />
-          <circle cx="200" cy="200" r="168" fill={`url(#${id}-stipple-fine)`} opacity="0.65" />
-          <circle cx="200" cy="200" r="168" fill={`url(#${id}-limb-glow)`} />
+        <g clipPath={`url(#${id}-disc)`} filter="url(#${id}-paper)">
+          <circle cx="200" cy="200" r="168" fill={PAPER} />
 
-          {/* Lunar maria — solid ink, left & center (light from right) */}
-          <g fill="#0a0908">
-            <path d="M52 118 C68 72 118 52 158 68 C148 98 108 128 72 142 C48 138 38 128 52 118Z" />
-            <path d="M44 168 C78 148 128 158 138 198 C118 228 68 222 42 192 C34 182 38 172 44 168Z" />
-            <path d="M98 88 C118 68 148 72 162 92 C152 112 118 118 92 102 C86 96 90 90 98 88Z" />
-            <path d="M128 148 C158 132 188 148 182 178 C162 198 128 192 118 168 C116 158 122 152 128 148Z" />
-            <path d="M72 198 C98 188 118 208 108 232 C82 242 58 228 62 208 C64 202 68 200 72 198Z" />
-            <ellipse cx="118" cy="248" rx="32" ry="22" />
+          <g stroke={GRAPHITE_SOFT} strokeWidth="0.35" opacity="0.2" strokeLinecap="round">
+            {hatchFine.map((l, i) => (
+              <line key={`f${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+            ))}
+          </g>
+          <g stroke={GRAPHITE_SOFT} strokeWidth="0.32" opacity="0.14" strokeLinecap="round">
+            {hatchCross.map((l, i) => (
+              <line key={`c${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+            ))}
           </g>
 
-          {/* Cross-hatching in bright highlands (right side) */}
           <g
-            clipPath={`url(#${id}-disc)`}
-            stroke="#6b6254"
-            strokeWidth="0.7"
-            opacity="0.35"
+            stroke={GRAPHITE_LIGHT}
+            strokeWidth="0.38"
+            fill="none"
+            opacity="0.18"
             strokeLinecap="round"
           >
-            <line x1="220" y1="95" x2="248" y2="118" />
-            <line x1="228" y1="88" x2="256" y2="111" />
-            <line x1="252" y1="132" x2="278" y2="155" />
-            <line x1="244" y1="124" x2="270" y2="147" />
-            <line x1="268" y1="168" x2="292" y2="188" />
-            <line x1="260" y1="160" x2="284" y2="180" />
-            <line x1="238" y1="198" x2="262" y2="218" />
-            <line x1="248" y1="228" x2="272" y2="248" />
-            <line x1="210" y1="248" x2="234" y2="268" />
+            {curvedBands.map((d, i) => (
+              <path key={`b${i}`} d={d} />
+            ))}
           </g>
 
-          {/* Crater rims & interior hatching */}
+          <g mask={`url(#${id}-shade)`}>
+            <g stroke={GRAPHITE} strokeWidth="0.4" strokeLinecap="round" opacity="0.5">
+              {hatchShadowA.map((l, i) => (
+                <line key={`sa${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+              ))}
+            </g>
+            <g stroke={GRAPHITE} strokeWidth="0.36" strokeLinecap="round" opacity="0.42">
+              {hatchShadowB.map((l, i) => (
+                <line key={`sb${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+              ))}
+            </g>
+          </g>
+
           <g
-            stroke="#2a2620"
-            strokeWidth="1.1"
+            stroke={GRAPHITE}
+            strokeWidth="0.6"
+            fill="none"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            opacity="0.7"
+          >
+            <path d="M48 125 C62 78 115 58 155 72 C142 108 98 138 58 148 C42 142 38 132 48 125Z" />
+            <path d="M38 178 C72 158 122 168 132 205 C108 238 58 232 36 198 C30 186 34 176 38 178Z" />
+            <path d="M92 82 C112 62 142 66 158 88 C148 108 112 114 88 98 C82 90 86 84 92 82Z" />
+            <path d="M122 142 C152 126 182 142 176 172 C156 192 122 186 112 162 C110 152 116 146 122 142Z" />
+            <path d="M68 202 C94 192 114 212 104 236 C78 246 54 232 58 210 C60 204 64 202 68 202Z" />
+          </g>
+
+          <g clipPath={`url(#${id}-disc)`} opacity="0.55">
+            <g stroke={GRAPHITE} strokeWidth="0.28" strokeLinecap="round">
+              {hatchMariaA.map((l, i) => (
+                <line key={`m1${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+              ))}
+              {hatchMariaB.map((l, i) => (
+                <line key={`m2${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+              ))}
+            </g>
+          </g>
+
+          <g stroke={GRAPHITE_LIGHT} strokeWidth="0.32" opacity="0.22" strokeLinecap="round">
+            {[0, 24, 48, 72, 96, 120, 144, 168, 192, 216, 240, 264, 288, 312, 336].map((deg) => {
+              const r = (deg * Math.PI) / 180
+              const x0 = 248 + Math.cos(r) * 6
+              const y0 = 268 + Math.sin(r) * 6
+              const x1 = 248 + Math.cos(r) * 52
+              const y1 = 268 + Math.sin(r) * 52
+              return <line key={deg} x1={x0} y1={y0} x2={x1} y2={y1} />
+            })}
+          </g>
+
+          <g
+            stroke={GRAPHITE}
+            strokeWidth="0.7"
             fill="none"
             strokeLinecap="round"
-            opacity="0.85"
+            opacity="0.72"
           >
-            <circle cx="248" cy="108" r="22" />
-            <path d="M248 108 A22 22 0 0 1 262 125" strokeWidth="0.8" opacity="0.5" />
-            <line x1="242" y1="102" x2="252" y2="112" strokeWidth="0.6" opacity="0.4" />
-            <line x1="245" y1="99" x2="255" y2="109" strokeWidth="0.6" opacity="0.4" />
-
-            <circle cx="278" cy="142" r="14" />
-            <path d="M278 142 A14 14 0 0 1 288 154" strokeWidth="0.7" opacity="0.45" />
-            <line x1="274" y1="138" x2="282" y2="146" strokeWidth="0.55" opacity="0.35" />
-
-            <circle cx="262" cy="178" r="18" />
-            <path d="M262 178 A18 18 0 0 1 276 194" strokeWidth="0.75" opacity="0.45" />
-            <line x1="256" y1="172" x2="266" y2="182" strokeWidth="0.55" opacity="0.35" />
-            <line x1="259" y1="169" x2="269" y2="179" strokeWidth="0.55" opacity="0.35" />
-
-            <circle cx="292" cy="198" r="9" />
-            <circle cx="228" cy="162" r="11" />
-            <circle cx="302" cy="228" r="12" />
-            <circle cx="268" cy="248" r="8" />
-            <circle cx="238" cy="218" r="6" />
-            <circle cx="318" cy="168" r="5" />
-            <circle cx="212" cy="128" r="7" />
-            <circle cx="285" cy="268" r="6" />
+            <ellipse cx="252" cy="102" rx="24" ry="22" />
+            <path d="M252 102 A24 22 0 0 1 268 118" strokeWidth="0.48" opacity="0.4" />
+            <path d="M244 96 Q252 108 260 100" strokeWidth="0.42" opacity="0.32" />
+            <ellipse cx="282" cy="138" rx="15" ry="14" />
+            <path d="M282 138 A15 14 0 0 1 294 150" strokeWidth="0.42" opacity="0.38" />
+            <ellipse cx="264" cy="174" rx="19" ry="17" />
+            <path d="M264 174 A19 17 0 0 1 280 190" strokeWidth="0.48" opacity="0.38" />
+            <ellipse cx="298" cy="192" rx="10" ry="9" />
+            <ellipse cx="224" cy="158" rx="12" ry="11" />
+            <ellipse cx="308" cy="222" rx="13" ry="12" />
+            <ellipse cx="272" cy="242" rx="9" ry="8" />
+            <ellipse cx="238" cy="212" rx="7" ry="6" />
+            <ellipse cx="208" cy="122" rx="8" ry="7" />
           </g>
 
-          {/* Inner crater shadow fills */}
-          <g fill="#0a0908" opacity="0.25">
-            <path d="M248 108 A22 22 0 0 1 262 125 L248 108Z" />
-            <path d="M278 142 A14 14 0 0 1 288 154 L278 142Z" />
-            <path d="M262 178 A18 18 0 0 1 276 194 L262 178Z" />
-          </g>
+          <circle cx="200" cy="200" r="168" fill={`url(#${id}-sfumato)`} />
         </g>
 
-        {/* Hand-drawn outer rim */}
-        <circle
-          cx="200"
-          cy="200"
-          r="168"
-          stroke="#1a1814"
-          strokeWidth="2.2"
+        <path
+          d="M 198 34
+             C 248 32, 312 58, 348 108
+             C 372 158, 368 228, 332 278
+             C 292 328, 228 352, 162 342
+             C 98 328, 48 278, 38 218
+             C 28 158, 58 98, 118 58
+             C 148 40, 172 34, 198 34 Z"
+          stroke={GRAPHITE}
+          strokeWidth="1.3"
           fill="none"
-          opacity="0.9"
           strokeLinejoin="round"
-        />
-        <circle
-          cx="200"
-          cy="200"
-          r="166"
-          stroke="#f5ecd8"
-          strokeWidth="0.6"
-          fill="none"
-          opacity="0.35"
+          strokeLinecap="round"
+          opacity="0.9"
         />
       </svg>
     </div>

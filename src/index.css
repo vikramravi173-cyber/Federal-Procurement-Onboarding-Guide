@@ -330,4 +330,8 @@ input:checked + .checkbox-ui .check-draw,
   .gold-moon__corona {
     animation: none !important;
   }
+
+  .gold-moon--pencil .gold-moon__sphere {
+    filter: drop-shadow(0 0 16px rgba(242, 235, 226, 0.12));
+  }
 }
