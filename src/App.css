@@ -1122,6 +1122,128 @@ body:has(.hero) {
   inset: 0;
 }
 
+/* Intake space theme: nebula + shooting stars */
+.space-nebula {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.space-nebula__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);
+  will-change: transform, opacity;
+}
+
+.space-nebula__blob--1 {
+  width: min(70vw, 520px);
+  height: min(55vh, 420px);
+  left: -12%;
+  top: 8%;
+  background: radial-gradient(circle, rgba(45, 27, 105, 0.12) 0%, transparent 68%);
+  animation: nebulaDrift1 28s ease-in-out infinite;
+}
+
+.space-nebula__blob--2 {
+  width: min(65vw, 480px);
+  height: min(50vh, 380px);
+  right: -8%;
+  top: 28%;
+  background: radial-gradient(circle, rgba(13, 59, 56, 0.1) 0%, transparent 70%);
+  animation: nebulaDrift2 24s ease-in-out infinite;
+}
+
+.space-nebula__blob--3 {
+  width: min(60vw, 440px);
+  height: min(48vh, 360px);
+  left: 22%;
+  bottom: -6%;
+  background: radial-gradient(circle, rgba(61, 43, 0, 0.1) 0%, transparent 72%);
+  animation: nebulaDrift3 32s ease-in-out infinite;
+}
+
+@keyframes nebulaDrift1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(6%, 4%) scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes nebulaDrift2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1.02);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-5%, 6%) scale(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes nebulaDrift3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(0.98);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate(4%, -5%) scale(1.06);
+    opacity: 0.95;
+  }
+}
+
+.shooting-stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.shooting-star {
+  position: absolute;
+  width: 120px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.15) 25%,
+    rgba(255, 255, 255, 0.95) 55%,
+    rgba(212, 175, 55, 0.5) 75%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.6),
+    0 0 16px rgba(212, 175, 55, 0.35);
+  transform: rotate(var(--shoot-angle, -35deg));
+  opacity: 0;
+  animation: shootingStarStreak var(--shoot-duration, 0.8s) ease-out forwards;
+}
+
+@keyframes shootingStarStreak {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--shoot-angle, -35deg)) translateX(0) scaleX(0.3);
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--shoot-angle, -35deg)) translateX(140px) scaleX(1);
+  }
+}
+
 .intake-modal {
   position: relative;
   z-index: 1;

@@ -7,7 +7,7 @@ import type {
   UserProfile,
 } from '../data/types'
 import { useRipple } from '../hooks/useRipple'
-import { HeroBackground } from './HeroBackground'
+import { IntakeSpaceBackground } from './IntakeSpaceBackground'
 import { IntakeIcon, type IntakeIconName } from './IntakeIcon'
 
 interface IntakeFormProps {
@@ -118,7 +118,7 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
   return (
     <div className="intake-modal-overlay">
       <div className="intake-space-bg" aria-hidden="true">
-        <HeroBackground />
+        <IntakeSpaceBackground />
       </div>
       <div
         className={`intake-modal glass-card intake-modal--step-${step}`}

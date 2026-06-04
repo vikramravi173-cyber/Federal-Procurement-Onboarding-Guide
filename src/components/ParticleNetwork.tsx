@@ -6,17 +6,21 @@ interface Particle {
   vx: number
   vy: number
   r: number
+  twinklePhase: number
+  twinkleSpeed: number
 }
 
 interface ParticleNetworkProps {
   className?: string
   /** Max distance (px) to draw connecting lines */
   linkDistance?: number
+  /** Random fade in/out on each star */
+  twinkle?: boolean
 }
 
 const GOLD = '212, 175, 55'
 
-export function ParticleNetwork({ className = '', linkDistance = 130 }: ParticleNetworkProps) {
+export function ParticleNetwork({ className = '', linkDistance = 130, twinkle = false }: ParticleNetworkProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const frameRef = useRef(0)
   const particlesRef = useRef<Particle[]>([])
@@ -40,6 +44,8 @@ export function ParticleNetwork({ className = '', linkDistance = 130 }: Particle
         vx: (Math.random() - 0.5) * 0.22,
         vy: (Math.random() - 0.5) * 0.22,
         r: 1 + Math.random() * 0.6,
+        twinklePhase: Math.random() * Math.PI * 2,
+        twinkleSpeed: 0.6 + Math.random() * 1.4,
       }))
     }
 
@@ -59,11 +65,12 @@ export function ParticleNetwork({ className = '', linkDistance = 130 }: Particle
       if (particlesRef.current.length === 0) initParticles(w, h)
     }
 
-    const draw = (animate: boolean) => {
+    const draw = (animate: boolean, time = 0) => {
       const { w, h } = sizeRef.current
       if (w === 0 || h === 0) return
 
       const particles = particlesRef.current
+      const useTwinkle = twinkle && !reducedMotion
 
       if (animate) {
         for (const p of particles) {
@@ -90,7 +97,17 @@ export function ParticleNetwork({ className = '', linkDistance = 130 }: Particle
           const dy = a.y - b.y
           const dist = Math.hypot(dx, dy)
           if (dist < linkDistance) {
-            const alpha = (1 - dist / linkDistance) * 0.12
+            let alpha = (1 - dist / linkDistance) * 0.12
+            if (useTwinkle) {
+              const pulse =
+                0.55 +
+                0.45 *
+                  Math.sin(
+                    time * (particles[i].twinkleSpeed + particles[j].twinkleSpeed) * 0.5 +
+                      particles[i].twinklePhase,
+                  )
+              alpha *= pulse
+            }
             ctx.beginPath()
             ctx.strokeStyle = `rgba(${GOLD}, ${alpha})`
             ctx.lineWidth = 0.6
@@ -102,16 +119,20 @@ export function ParticleNetwork({ className = '', linkDistance = 130 }: Particle
       }
 
       for (const p of particles) {
+        let alpha = 0.35
+        if (useTwinkle) {
+          alpha = 0.12 + 0.38 * (0.5 + 0.5 * Math.sin(time * p.twinkleSpeed + p.twinklePhase))
+        }
         ctx.beginPath()
-        ctx.fillStyle = `rgba(${GOLD}, 0.35)`
+        ctx.fillStyle = `rgba(${GOLD}, ${alpha})`
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
         ctx.fill()
       }
     }
 
-    const loop = () => {
+    const loop = (timestamp: number) => {
       if (!running) return
-      draw(true)
+      draw(true, timestamp / 1000)
       frameRef.current = requestAnimationFrame(loop)
     }
 
@@ -130,7 +151,7 @@ export function ParticleNetwork({ className = '', linkDistance = 130 }: Particle
       cancelAnimationFrame(frameRef.current)
       observer.disconnect()
     }
-  }, [linkDistance])
+  }, [linkDistance, twinkle])
 
   return <canvas ref={canvasRef} className={`particle-network ${className}`.trim()} aria-hidden="true" />
 }
