@@ -6,7 +6,6 @@ import type {
   IndustryCategory,
   UserProfile,
 } from '../data/types'
-import { useRipple } from '../hooks/useRipple'
 import { IntakeSpaceBackground } from './IntakeSpaceBackground'
 import { IntakeIcon, type IntakeIconName } from './IntakeIcon'
 
@@ -53,14 +52,17 @@ const multiOptions: { value: CertificationId; label: string }[] = [
   { value: 'vosb', label: 'VOSB' },
 ]
 
+const QUESTION_COUNT = 3
+const SLIDE_MS = 300
+
 export function IntakeForm({ onComplete }: IntakeFormProps) {
   const [step, setStep] = useState(0)
   const [slideDir, setSlideDir] = useState<'forward' | 'back'>('forward')
+  const [slidePhase, setSlidePhase] = useState<'enter' | 'exit'>('enter')
   const [structure, setStructure] = useState<BusinessStructure | null>(null)
   const [industry, setIndustry] = useState<IndustryCategory | null>(null)
   const [designation, setDesignation] = useState<BusinessDesignation | null>(null)
   const [multipleDesignations, setMultipleDesignations] = useState<CertificationId[]>([])
-  const ripple = useRipple()
 
   const questions = [
     {
@@ -91,9 +93,16 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
     current.value !== null &&
     (step < 2 || designation !== 'multiple' || multipleDesignations.length > 0)
 
+  const progressPercent = ((step + 1) / QUESTION_COUNT) * 100
+
   const goToStep = (next: number) => {
+    if (next === step || next < 0 || next > 2) return
     setSlideDir(next > step ? 'forward' : 'back')
-    setStep(next)
+    setSlidePhase('exit')
+    window.setTimeout(() => {
+      setStep(next)
+      setSlidePhase('enter')
+    }, SLIDE_MS)
   }
 
   const handleNext = () => {
@@ -115,13 +124,18 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
     )
   }
 
+  const slideClass =
+    slidePhase === 'exit'
+      ? `intake-slide--exit intake-slide--exit-${slideDir}`
+      : `intake-slide--enter intake-slide--enter-${slideDir}`
+
   return (
     <div className="intake-modal-overlay">
       <div className="intake-space-bg" aria-hidden="true">
         <IntakeSpaceBackground />
       </div>
       <div
-        className={`intake-modal glass-card intake-modal--step-${step}`}
+        className={`intake-modal intake-modal--step-${step}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="intake-title"
@@ -129,77 +143,78 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
         <div className="intake-header">
           <div className="hero-badge">Getting Started</div>
           <h1 id="intake-title">Federal Contract Procurement Guide for Small Businesses</h1>
-          <p className="hero-subtitle intake-header-tagline">
+          <p className="intake-header-tagline">
             Answer 3 quick questions so we can personalize your roadmap.
           </p>
-        </div>
-
-        <div className="intake-progress">
-          {questions.map((_, i) => (
+          <div
+            className="intake-progress-bar"
+            role="progressbar"
+            aria-valuenow={step + 1}
+            aria-valuemin={1}
+            aria-valuemax={QUESTION_COUNT}
+            aria-label={`Question ${step + 1} of ${QUESTION_COUNT}`}
+          >
             <div
-              key={i}
-              className={`intake-dot${i === step ? ' intake-dot--active' : ''}${i < step ? ' intake-dot--done' : ''}`}
+              className="intake-progress-bar__fill"
+              style={{ width: `${progressPercent}%` }}
             />
-          ))}
+          </div>
         </div>
 
         <div className="intake-body">
-          <div
-            key={step}
-            className={`intake-slide intake-slide--${slideDir}`}
-          >
-            <div className="intake-card glass-card-inner">
-              <h2>{current.title}</h2>
+          <div className={`intake-slide ${slideClass}`}>
+            <div className="intake-question">
+              <h2 className="intake-question-title">{current.title}</h2>
               <p className="intake-subtitle">{current.subtitle}</p>
 
               <div className="intake-options">
-                {current.options.map((opt) => (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    className={`intake-option-card${current.value === opt.value ? ' intake-option-card--selected' : ''}`}
-                    onClick={(e) => {
-                      ripple(e)
-                      current.setValue(opt.value as never)
-                    }}
-                  >
-                    <IntakeIcon name={opt.icon} />
-                    <span className="intake-option-label">{opt.label}</span>
-                    {current.value === opt.value && (
-                      <span className="intake-option-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                          <polyline points="20 6 9 17 4 12" className="check-draw" />
-                        </svg>
-                      </span>
-                    )}
-                  </button>
-                ))}
+                {current.options.map((opt) => {
+                  const selected = current.value === opt.value
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      className={`intake-pill${selected ? ' intake-pill--selected' : ''}`}
+                      onClick={() => current.setValue(opt.value as never)}
+                    >
+                      <IntakeIcon name={opt.icon} />
+                      <span className="intake-pill-label">{opt.label}</span>
+                      {selected && (
+                        <span className="intake-pill-check" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        </span>
+                      )}
+                    </button>
+                  )
+                })}
               </div>
 
               {step === 2 && designation === 'multiple' && (
                 <div className="intake-multi">
                   <p className="intake-multi-label">Select all that apply:</p>
-                  <div className="intake-multi-grid">
-                    {multiOptions.map((opt) => (
-                      <button
-                        key={opt.value}
-                        type="button"
-                        className={`intake-option-card intake-option-card--compact${multipleDesignations.includes(opt.value) ? ' intake-option-card--selected' : ''}`}
-                        onClick={(e) => {
-                          ripple(e)
-                          toggleMulti(opt.value)
-                        }}
-                      >
-                        <span className="intake-option-label">{opt.label}</span>
-                        {multipleDesignations.includes(opt.value) && (
-                          <span className="intake-option-check" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                              <polyline points="20 6 9 17 4 12" className="check-draw" />
-                            </svg>
-                          </span>
-                        )}
-                      </button>
-                    ))}
+                  <div className="intake-options">
+                    {multiOptions.map((opt) => {
+                      const selected = multipleDesignations.includes(opt.value)
+                      return (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          className={`intake-pill intake-pill--no-icon${selected ? ' intake-pill--selected' : ''}`}
+                          onClick={() => toggleMulti(opt.value)}
+                        >
+                          <span className="intake-pill-label">{opt.label}</span>
+                          {selected && (
+                            <span className="intake-pill-check" aria-hidden="true">
+                              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            </span>
+                          )}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
               )}
@@ -207,28 +222,25 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
           </div>
         </div>
 
-        <div className="intake-nav">
+        <div className="intake-footer">
           <button
             type="button"
-            className="nav-btn btn-ripple"
-            onClick={(e) => {
-              ripple(e)
-              goToStep(step - 1)
-            }}
-            disabled={step === 0}
+            className={`intake-continue${canAdvance ? ' intake-continue--ready' : ''}`}
+            onClick={handleNext}
+            disabled={!canAdvance}
           >
-            ← Back
+            <span>{step < 2 ? 'Continue' : 'Build My Roadmap'}</span>
+            <span className="intake-continue-arrow" aria-hidden="true">
+              →
+            </span>
           </button>
           <button
             type="button"
-            className="nav-btn nav-btn--primary btn-ripple intake-next"
-            onClick={(e) => {
-              ripple(e)
-              handleNext()
-            }}
-            disabled={!canAdvance}
+            className="intake-back"
+            onClick={() => goToStep(step - 1)}
+            disabled={step === 0}
           >
-            {step < 2 ? 'Continue →' : 'Build My Roadmap →'}
+            ← Back
           </button>
         </div>
       </div>

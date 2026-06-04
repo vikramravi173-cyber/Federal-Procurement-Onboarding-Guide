@@ -24,6 +24,7 @@ export type IntakeIconName =
 
 interface IntakeIconProps {
   name: IntakeIconName
+  className?: string
 }
 
 const svgProps = {
@@ -36,10 +37,10 @@ const svgProps = {
   'aria-hidden': true,
 }
 
-export function IntakeIcon({ name }: IntakeIconProps) {
+export function IntakeIcon({ name, className = 'intake-pill-icon' }: IntakeIconProps) {
   return (
-    <span className="intake-option-icon">
-      <svg {...svgProps}>
+    <span className={className} aria-hidden="true">
+      <svg {...svgProps} width={16} height={16}>
         {name === 'sole-proprietor' && (
           <>
             <circle cx="12" cy="8" r="3.25" />
