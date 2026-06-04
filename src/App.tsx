@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { CertificationCard } from './components/CertificationCard'
 import { CompletionModal } from './components/CompletionModal'
 import { FindContractsSection } from './components/FindContractsSection'
@@ -19,6 +19,7 @@ import {
 } from './data/personalization'
 import type { OnboardingStep } from './data/types'
 import { useProgressTracker } from './hooks/useProgressTracker'
+import { useScrollGuideReveal } from './hooks/useScrollGuideReveal'
 import { useRipple } from './hooks/useRipple'
 import { useUserProfile } from './hooks/useUserProfile'
 import { IconCheck, IconSearch, IconStar } from './components/GuideIcons'
@@ -164,6 +165,16 @@ function App() {
       })
   }, [trackableIds, completed, steps, certs, profile])
 
+  const { getReveal, isLocked } = useScrollGuideReveal(
+    cardRefs,
+    navigableIndices,
+    setActiveIndex,
+  )
+
+  const guideWrapStyle = (index: number): CSSProperties => ({
+    ['--step-reveal' as string]: String(getReveal(index)),
+  })
+
   if (!intakeComplete || !profile) {
     return <IntakeForm onComplete={saveProfile} />
   }
@@ -171,12 +182,6 @@ function App() {
   const activeNavPosition = navigableIndices.indexOf(activeIndex)
   const canGoBack = activeNavPosition > 0
   const canGoForward = activeNavPosition >= 0 && activeNavPosition < navigableIndices.length - 1
-
-  const isLocked = (index: number) => {
-    const navPos = navigableIndices.indexOf(index)
-    if (navPos < 0) return false
-    return navPos > activeNavPosition
-  }
 
   const goPrev = () => {
     if (canGoBack) scrollToItem(navigableIndices[activeNavPosition - 1])
@@ -274,30 +279,31 @@ function App() {
         {guideItems.map((item, index) => {
           if (item.kind === 'cert' && certIndices[0] === index) {
             return (
-              <div
-                key="cert-scroll"
-                className="cert-scroll-section"
-                ref={(el) => {
-                  certIndices.forEach((ci) => {
-                    cardRefs.current[ci] = el
-                  })
-                }}
-              >
+              <div key="cert-scroll" className="cert-scroll-section">
                 <div className="cert-scroll-track">
                   {certIndices.map((ci) => {
                     const certItem = guideItems[ci] as Extract<GuideItem, { kind: 'cert' }>
                     const track = certs[certItem.certIndex]
                     return (
-                      <CertificationCard
+                      <div
                         key={track.id}
-                        track={track}
-                        isRecommended={isRecommendedCert(track, profile)}
-                        isCompleted={completed.has(`cert-${track.id}`)}
-                        isActive={ci === activeIndex}
-                        isLocked={isLocked(ci)}
-                        onToggle={() => toggle(`cert-${track.id}`)}
-                        onFocus={() => setActiveIndex(ci)}
-                      />
+                        className={`guide-item-wrap${ci === activeIndex ? ' guide-item-wrap--active' : ''}`}
+                        data-guide-index={ci}
+                        style={guideWrapStyle(ci)}
+                        ref={(el) => {
+                          cardRefs.current[ci] = el
+                        }}
+                      >
+                        <CertificationCard
+                          track={track}
+                          isRecommended={isRecommendedCert(track, profile)}
+                          isCompleted={completed.has(`cert-${track.id}`)}
+                          isActive={ci === activeIndex}
+                          isLocked={isLocked(ci)}
+                          onToggle={() => toggle(`cert-${track.id}`)}
+                          onFocus={() => setActiveIndex(ci)}
+                        />
+                      </div>
                     )
                   })}
                 </div>
@@ -307,25 +313,34 @@ function App() {
 
           if (item.kind === 'cert') return null
 
-          return (
-            <div
-              key={
-                item.kind === 'section-header'
-                  ? item.id
-                  : item.kind === 'step'
-                    ? item.step.id
-                    : 'find'
-              }
-              ref={(el) => {
-                if (item.kind !== 'section-header') cardRefs.current[index] = el
-              }}
-            >
-              {item.kind === 'section-header' && (
+          const wrapKey =
+            item.kind === 'section-header'
+              ? item.id
+              : item.kind === 'step'
+                ? item.step.id
+                : 'find'
+
+          if (item.kind === 'section-header') {
+            return (
+              <div key={wrapKey}>
                 <div className="section-header reveal reveal--visible">
                   <h2>{item.title}</h2>
                   <p>{item.subtitle}</p>
                 </div>
-              )}
+              </div>
+            )
+          }
+
+          return (
+            <div
+              key={wrapKey}
+              className={`guide-item-wrap${index === activeIndex ? ' guide-item-wrap--active' : ''}`}
+              data-guide-index={index}
+              style={guideWrapStyle(index)}
+              ref={(el) => {
+                cardRefs.current[index] = el
+              }}
+            >
               {item.kind === 'step' && (
                 <StepCard
                   step={item.step}

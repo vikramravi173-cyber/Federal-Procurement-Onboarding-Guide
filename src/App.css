@@ -325,7 +325,7 @@ body:has(.hero) {
   position: relative;
   padding: 1.5rem;
   border-left: 3px solid transparent;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
   cursor: pointer;
   overflow: hidden;
 }
@@ -356,8 +356,29 @@ body:has(.hero) {
 }
 
 .step-card--locked {
-  opacity: 0.55;
   pointer-events: auto;
+}
+
+/* Scroll-driven reveal: brighten as each section enters the viewport */
+.guide-item-wrap {
+  --step-reveal: 0.55;
+}
+
+.guide-item-wrap .step-card,
+.guide-item-wrap .find-contracts-section,
+.guide-item-wrap .cert-track-card {
+  opacity: var(--step-reveal);
+  transition:
+    opacity 0.55s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.guide-item-wrap--active .step-card,
+.guide-item-wrap--active .find-contracts-section,
+.guide-item-wrap--active .cert-track-card {
+  opacity: 1;
 }
 
 .step-card--pop .step-number {

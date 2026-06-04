@@ -307,6 +307,13 @@ input:checked + .checkbox-ui .check-draw,
     opacity: 0.7;
   }
 
+  .guide-item-wrap .step-card,
+  .guide-item-wrap .find-contracts-section,
+  .guide-item-wrap .cert-track-card {
+    opacity: 1 !important;
+    transition: none;
+  }
+
   .space-nebula__blob {
     animation: none !important;
   }
