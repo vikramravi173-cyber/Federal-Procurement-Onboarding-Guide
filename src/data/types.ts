@@ -9,6 +9,7 @@ export type IndustryCategory =
   | 'transportation-logistics'
   | 'facilities-maintenance'
   | 'education-training'
+  | 'defense'
   | 'other'
 
 export type BusinessDesignation =

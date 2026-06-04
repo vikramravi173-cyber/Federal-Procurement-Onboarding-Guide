@@ -11,6 +11,7 @@ export type IntakeIconName =
   | 'transportation-logistics'
   | 'facilities-maintenance'
   | 'education-training'
+  | 'defense'
   | 'other'
   | 'none'
   | 'veteran'
@@ -116,6 +117,11 @@ export function IntakeIcon({ name }: IntakeIconProps) {
           <>
             <path d="M22 10v6M2 10l10-6 10 6-10 6z" />
             <path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5" />
+          </>
+        )}
+        {name === 'defense' && (
+          <>
+            <path d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z" />
           </>
         )}
         {name === 'other' && (

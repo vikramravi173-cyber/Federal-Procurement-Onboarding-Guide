@@ -89,6 +89,7 @@ export function getIndustryLabel(industry: IndustryCategory): string {
     'transportation-logistics': 'Transportation & Logistics',
     'facilities-maintenance': 'Facilities & Maintenance',
     'education-training': 'Education & Training',
+    defense: 'Defense',
     other: 'Other',
   }
   return labels[industry]

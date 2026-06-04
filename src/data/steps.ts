@@ -33,6 +33,8 @@ export const onboardingSteps: OnboardingStep[] = [
         'Facilities support and building maintenance NAICS codes (e.g., 561210, 561720) often use $25M–$41.5M revenue thresholds. Janitorial and grounds contracts may have separate size standards.',
       'education-training':
         'Education and training services NAICS codes (e.g., 611430, 611420) typically use revenue-based thresholds in the $8M–$19M range. Federal training contracts often reference specific labor categories.',
+      defense:
+        'Defense and aerospace NAICS codes vary by sub-sector — manufacturing often uses 500–1,500 employee thresholds while engineering and R&D services may use $25M–$41.5M revenue limits. Verify size standards for each code you plan to pursue with DoD.',
     },
     designationNotes: {
       'native-american-owned':
@@ -126,6 +128,8 @@ export const onboardingSteps: OnboardingStep[] = [
         'Common codes: 561210 (Facilities Support Services), 561720 (Janitorial Services), 561730 (Landscaping), 238220 (Plumbing/HVAC when maintenance-focused).',
       'education-training':
         'Common codes: 611430 (Professional and Management Development Training), 611420 (Computer Training), 611519 (Other Technical and Trade Schools).',
+      defense:
+        'Common defense NAICS: 336411 (Aircraft Manufacturing), 541330 (Engineering Services), 541512 (Computer Systems Design), 541715 (R&D in Physical/Engineering Sciences). Match codes to the systems, services, or R&D you deliver to DoD.',
     },
     designationNotes: {
       'woman-owned':
@@ -153,6 +157,10 @@ export const onboardingSteps: OnboardingStep[] = [
     whyItMatters:
       'Non-compliance with FAR clauses is one of the top reasons bids are rejected or contracts are terminated. Understanding the rules protects your business from costly mistakes and shows contracting officers you are a serious, prepared vendor.',
     section: 'core',
+    industryNotes: {
+      defense:
+        'DoD contracts incorporate the Defense Federal Acquisition Regulation Supplement (DFARS) in addition to FAR. Review DFARS clauses for cybersecurity, export controls, and subcontract flow-down requirements before responding.',
+    },
   },
   {
     id: 'financial-systems',
@@ -197,6 +205,8 @@ export const onboardingSteps: OnboardingStep[] = [
         'Highlight facilities cleared personnel (if any), geographic coverage, staffing capacity, and experience with federal building maintenance or janitorial contracts.',
       'education-training':
         'List instructor qualifications, curriculum areas, past federal or agency training contracts, and applicable NAICS codes for the training you deliver.',
+      defense:
+        'Highlight security clearances (facility and personnel), CMMC level, ITAR/EAR compliance, past DoD contract performance, and quality certifications such as ISO 9001 or AS9100.',
     },
   },
   {
@@ -221,6 +231,8 @@ export const onboardingSteps: OnboardingStep[] = [
         'Facilities bids frequently require staffing plans, wage determination compliance (Service Contract Act), and transition plans — review labor clauses early.',
       'education-training':
         'Training proposals typically require detailed curricula, instructor resumes, and per-seat or per-hour pricing — match the evaluation criteria in the solicitation.',
+      defense:
+        'Defense solicitations often include DFARS clauses, export control requirements (ITAR/EAR), cybersecurity (CMMC/DFARS 252.204-7012), and may require cleared personnel or facilities — confirm compliance before the deadline.',
     },
     designationNotes: {
       veteran:

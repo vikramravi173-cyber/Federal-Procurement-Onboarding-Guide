@@ -29,6 +29,7 @@ const industries: { value: IndustryCategory; label: string; icon: IntakeIconName
   { value: 'transportation-logistics', label: 'Transportation & Logistics', icon: 'transportation-logistics' },
   { value: 'facilities-maintenance', label: 'Facilities & Maintenance', icon: 'facilities-maintenance' },
   { value: 'education-training', label: 'Education & Training', icon: 'education-training' },
+  { value: 'defense', label: 'Defense', icon: 'defense' },
   { value: 'other', label: 'Other', icon: 'other' },
 ]
 
