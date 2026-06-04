@@ -1,26 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Outfit:wght@400;500;600&display=swap');
 
 :root {
-  --navy-deep: #0f172a;
-  --navy-dark: #1e3a5f;
-  --navy-black: #0a0a0a;
-  --navy-900: #0f172a;
-  --navy-800: #1e293b;
-  --navy-700: #334155;
-  --navy-600: #475569;
-  --accent: #3b82f6;
-  --accent-glow: rgba(59, 130, 246, 0.55);
-  --accent-soft: rgba(59, 130, 246, 0.12);
-  --gold: #fbbf24;
-  --text-primary: #ffffff;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --surface: rgba(255, 255, 255, 0.06);
-  --surface-border: rgba(255, 255, 255, 0.14);
+  --navy-deep: #000000;
+  --navy-dark: #121212;
+  --navy-black: #050505;
+  --navy-900: #0a0a0a;
+  --navy-800: #161616;
+  --navy-700: #242424;
+  --navy-600: #3a3a3a;
+  --accent: #d4af37;
+  --accent-light: #f0d78c;
+  --accent-glow: rgba(212, 175, 55, 0.55);
+  --accent-soft: rgba(212, 175, 55, 0.12);
+  --gold: #d4af37;
+  --gold-dim: #b8962e;
+  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body: 'Outfit', system-ui, sans-serif;
+  --text-primary: #faf8f2;
+  --text-secondary: #c4bdb0;
+  --text-muted: #8a8278;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-border: rgba(212, 175, 55, 0.18);
   --glass-blur: blur(12px);
-  --success: #34d399;
-  --warning: #fbbf24;
-  --warning-bg: rgba(251, 191, 36, 0.1);
+  --success: #c9b84a;
+  --warning: #e8b84a;
+  --warning-bg: rgba(212, 175, 55, 0.1);
   --radius: 12px;
   --radius-lg: 16px;
 }
@@ -38,13 +42,13 @@ html {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-body);
   background-color: var(--navy-deep);
   background-image:
-    linear-gradient(135deg, rgba(59, 130, 246, 0.03) 25%, transparent 25%),
-    linear-gradient(225deg, rgba(59, 130, 246, 0.03) 25%, transparent 25%),
-    linear-gradient(45deg, rgba(59, 130, 246, 0.03) 25%, transparent 25%),
-    linear-gradient(315deg, rgba(59, 130, 246, 0.03) 25%, transparent 25%);
+    linear-gradient(135deg, rgba(212, 175, 55, 0.04) 25%, transparent 25%),
+    linear-gradient(225deg, rgba(212, 175, 55, 0.04) 25%, transparent 25%),
+    linear-gradient(45deg, rgba(212, 175, 55, 0.03) 25%, transparent 25%),
+    linear-gradient(315deg, rgba(212, 175, 55, 0.03) 25%, transparent 25%);
   background-size: 24px 24px;
   background-position: 0 0, 12px 0, 12px -12px, 0 12px;
   color: var(--text-primary);
@@ -62,17 +66,49 @@ a {
 }
 
 button {
-  font-family: inherit;
+  font-family: var(--font-body);
   cursor: pointer;
   position: relative;
   overflow: hidden;
+}
+
+/* Display typography — italic serif for elegance */
+.type-display {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+h1,
+h2,
+h3,
+.hero h1,
+.hero-typing,
+.hero-subtitle,
+.step-title,
+.section-header h2,
+.cert-track-title,
+.completion-modal h2,
+.intake-header h1,
+.intake-card h2,
+.find-tool-card h3,
+.glossary-panel-header h2 {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-weight: 700;
 }
 
 /* Ripple */
 .ripple {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(212, 175, 55, 0.45);
   transform: scale(0);
   animation: rippleAnim 0.55s ease-out forwards;
   pointer-events: none;
@@ -117,11 +153,12 @@ input:checked + .checkbox-ui .check-draw,
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--surface-border);
   border-radius: var(--radius-lg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
 .glass-card-inner {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(212, 175, 55, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.1);
   border-radius: var(--radius);
 }
 
