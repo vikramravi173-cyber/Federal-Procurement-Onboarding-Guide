@@ -3,6 +3,7 @@ import { CertificationCard } from './components/CertificationCard'
 import { CompletionModal } from './components/CompletionModal'
 import { FindContractsSection } from './components/FindContractsSection'
 import { Glossary } from './components/Glossary'
+import { FlowingLinesDivider } from './components/FlowingLinesDivider'
 import { HeroSection } from './components/HeroSection'
 import { IntakeForm } from './components/IntakeForm'
 import { ProgressBar } from './components/ProgressBar'
@@ -216,6 +217,8 @@ function App() {
         onResetProfile={handleReset}
       />
 
+      <FlowingLinesDivider />
+
       <div className="sticky-bar">
         <ProgressBar
           completedCount={completedCount}
@@ -323,6 +326,7 @@ function App() {
           if (item.kind === 'section-header') {
             return (
               <div key={wrapKey}>
+                <FlowingLinesDivider />
                 <div className="section-header reveal reveal--visible">
                   <h2>{item.title}</h2>
                   <p>{item.subtitle}</p>

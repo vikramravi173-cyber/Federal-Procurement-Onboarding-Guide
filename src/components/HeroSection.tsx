@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
+import { CapitolDrawing } from './CapitolDrawing'
 import { HeroBackground } from './HeroBackground'
 import { smoothScrollToSelector } from '../utils/smoothScroll'
 
@@ -58,6 +59,9 @@ export function HeroSection({ subtitle, onResetProfile }: HeroSectionProps) {
     <header className="hero">
       <div className="hero-bg-parallax" style={{ transform: 'translateY(var(--parallax-y, 0))' }}>
         <HeroBackground />
+        <div className="hero-capitol-wrap">
+          <CapitolDrawing />
+        </div>
       </div>
       <div className="hero-content">
         <div className="hero-badge">Personalized Guide</div>

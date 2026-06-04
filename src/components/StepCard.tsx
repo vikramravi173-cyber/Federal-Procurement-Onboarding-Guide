@@ -4,6 +4,7 @@ import { capabilityStatementMustInclude } from '../data/steps'
 import { useInView } from '../hooks/useInView'
 import { useRipple } from '../hooks/useRipple'
 import { IconCheck } from './GuideIcons'
+import { StepCardCorners } from './StepCardCorners'
 
 interface StepCardProps {
   step: OnboardingStep
@@ -41,6 +42,8 @@ export function StepCard({
       id={`step-${step.id}`}
       onClick={onFocus}
     >
+      <StepCardCorners inView={inView} />
+
       <span className="step-watermark" aria-hidden="true">
         {index + 1}
       </span>

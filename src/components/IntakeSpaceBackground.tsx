@@ -1,6 +1,6 @@
 import { GoldSun } from './GoldSun'
 import { ParticleNetwork } from './ParticleNetwork'
-import { ShootingStars } from './ShootingStars'
+import { VectorShootingStars } from './VectorShootingStars'
 import { StarField } from './StarField'
 
 /** Intake backdrop: nebula, stars, gold sun, constellation, and shooting stars. */
@@ -16,7 +16,7 @@ export function IntakeSpaceBackground() {
       <GoldSun />
       <StarField className="hero-star-field" density={1.25} />
       <ParticleNetwork className="hero-particles" twinkle />
-      <ShootingStars maxActive={8} minInterval={700} maxInterval={1800} />
+      <VectorShootingStars maxActive={8} minInterval={700} maxInterval={1800} />
       <div className="hero-bg-vignette" />
     </div>
   )

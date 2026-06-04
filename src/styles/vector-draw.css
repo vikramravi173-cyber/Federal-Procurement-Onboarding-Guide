@@ -1,0 +1,163 @@
+/* SVG stroke-dashoffset drawing system */
+
+.draw-stroke {
+  fill: none;
+  stroke: var(--gold, #d4af37);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Hero Capitol — 3.5s pen trace on load */
+.capitol-drawing {
+  width: min(92vw, 720px);
+  height: auto;
+  opacity: 0.42;
+  filter: drop-shadow(0 0 24px rgba(212, 175, 55, 0.15));
+}
+
+.capitol-drawing .draw-stroke {
+  stroke: var(--accent-light, #f0d78c);
+  stroke-width: 1.35;
+}
+
+/* Gold sun — rays draw in on load */
+.gold-sun__ray-draw {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: var(--ray-len);
+  stroke-dashoffset: var(--ray-len);
+}
+
+.gold-sun--drawn .gold-sun__ray-draw {
+  animation: rayDrawIn var(--ray-dur, 1.2s) ease forwards;
+  animation-delay: var(--ray-delay, 0s);
+}
+
+@keyframes rayDrawIn {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.gold-sun--drawn .gold-sun__disc-draw {
+  stroke-dasharray: var(--disc-len, 700);
+  stroke-dashoffset: var(--disc-len, 700);
+  animation: rayDrawIn 2s ease forwards;
+}
+
+.gold-sun--drawn .gold-sun__frame-draw {
+  stroke-dasharray: var(--frame-len, 1450);
+  stroke-dashoffset: var(--frame-len, 1450);
+  animation: rayDrawIn 2.8s ease 0.4s forwards;
+}
+
+/* Vector shooting stars */
+.vector-shooting-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.vector-shooting-star {
+  fill: none;
+  stroke: var(--accent-light, #f0d78c);
+  stroke-linecap: round;
+  stroke-width: 1.5;
+  stroke-dasharray: var(--star-len);
+  stroke-dashoffset: var(--star-len);
+  opacity: 0;
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
+  animation: vectorStarShoot var(--star-dur, 0.9s) ease-out forwards;
+}
+
+@keyframes vectorStarShoot {
+  0% {
+    stroke-dashoffset: var(--star-len);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/* Step card corner brackets */
+.step-card-corners {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.step-card-corners .draw-stroke {
+  stroke: var(--gold, #d4af37);
+  stroke-width: 1.25;
+  opacity: 0.65;
+}
+
+/* Flowing lines between sections */
+.flowing-lines {
+  width: 100%;
+  height: 56px;
+  margin: 1.5rem 0;
+  opacity: 0.45;
+  overflow: visible;
+}
+
+.flowing-lines__path {
+  fill: none;
+  stroke: var(--gold, #d4af37);
+  stroke-width: 1;
+  stroke-linecap: round;
+  stroke-dasharray: 6 18;
+  animation: flowDash 28s linear infinite;
+}
+
+.flowing-lines__path--delay-1 {
+  animation-delay: -7s;
+  opacity: 0.55;
+}
+
+.flowing-lines__path--delay-2 {
+  animation-delay: -14s;
+  opacity: 0.35;
+  stroke-width: 0.75;
+}
+
+@keyframes flowDash {
+  to {
+    stroke-dashoffset: -240;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capitol-drawing .draw-stroke,
+  .gold-sun--drawn .gold-sun__ray-draw,
+  .gold-sun--drawn .gold-sun__disc-draw,
+  .gold-sun--drawn .gold-sun__frame-draw,
+  .vector-shooting-star,
+  .step-card-corners .draw-stroke {
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .flowing-lines__path {
+    animation: none !important;
+  }
+
+  .gold-sun__rays--far,
+  .gold-sun__rays--mid {
+    animation: none !important;
+  }
+}

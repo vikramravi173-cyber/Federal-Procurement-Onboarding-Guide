@@ -1,4 +1,4 @@
-import { useId, useMemo } from 'react'
+import { useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
 import { buildCoronaRays, buildRadialHatch } from './sunRays'
 
 const INK = {
@@ -12,18 +12,37 @@ const INK = {
 
 const CX = 250
 const CY = 250
+const FRAME_R = 228
+const DISC_R = 112
 
-/** Vitruvian gold sun — radiant corona, manuscript ink, layered aura. */
+function rayLen(x1: number, y1: number, x2: number, y2: number) {
+  return Math.hypot(x2 - x1, y2 - y1)
+}
+
+/** Vitruvian gold sun — radiant corona with stroke-draw rays on load. */
 export function GoldSun() {
   const id = useId().replace(/:/g, '')
+  const [drawn, setDrawn] = useState(false)
 
   const coronaLong = useMemo(() => buildCoronaRays(CX, CY, 48, 118, 248, 0.1), [])
   const coronaMid = useMemo(() => buildCoronaRays(CX, CY, 32, 95, 185, 0.14), [])
+  const innerRays = useMemo(() => buildCoronaRays(CX, CY, 16, 112, 138, 0), [])
   const radialHatch = useMemo(() => buildRadialHatch(CX, CY, 56, 28, 108), [])
   const radialCross = useMemo(() => buildRadialHatch(CX, CY, 28, 45, 102), [])
 
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setDrawn(true))
+    return () => cancelAnimationFrame(frame)
+  }, [])
+
+  const frameLen = 2 * Math.PI * FRAME_R
+  const discLen = 2 * Math.PI * DISC_R
+
   return (
-    <div className="gold-sun gold-sun--vitruvian" aria-hidden="true">
+    <div
+      className={`gold-sun gold-sun--vitruvian${drawn ? ' gold-sun--drawn' : ''}`}
+      aria-hidden="true"
+    >
       <div className="gold-sun__aura gold-sun__aura--cosmic" />
       <div className="gold-sun__aura gold-sun__aura--outer" />
       <div className="gold-sun__aura gold-sun__aura--mid" />
@@ -70,56 +89,75 @@ export function GoldSun() {
           </filter>
         </defs>
 
-        {/* Vitruvian circle */}
         <circle
           cx={CX}
           cy={CY}
-          r={228}
+          r={FRAME_R}
           stroke={INK.line}
           strokeWidth="0.75"
           fill="none"
           opacity="0.35"
-          className="gold-sun__frame"
+          className="gold-sun__frame gold-sun__frame-draw"
+          style={{ ['--frame-len' as string]: frameLen }}
         />
 
-        {/* Outer corona rays */}
         <g className="gold-sun__rays gold-sun__rays--far" filter={`url(#${id}-ray-glow)`}>
-          {coronaLong.map((ray, i) => (
-            <line
-              key={`fl${i}`}
-              x1={ray.x1}
-              y1={ray.y1}
-              x2={ray.x2}
-              y2={ray.y2}
-              stroke={INK.bright}
-              strokeWidth={ray.width}
-              strokeLinecap="round"
-              opacity={0.22 + (i % 4) * 0.04}
-            />
-          ))}
+          {coronaLong.map((ray, i) => {
+            const len = rayLen(ray.x1, ray.y1, ray.x2, ray.y2)
+            return (
+              <line
+                key={`fl${i}`}
+                x1={ray.x1}
+                y1={ray.y1}
+                x2={ray.x2}
+                y2={ray.y2}
+                stroke={INK.bright}
+                strokeWidth={ray.width}
+                strokeLinecap="round"
+                opacity={0.22 + (i % 4) * 0.04}
+                className="gold-sun__ray-draw"
+                style={
+                  {
+                    '--ray-len': len,
+                    '--ray-dur': '1.4s',
+                    '--ray-delay': `${0.05 + (i % 12) * 0.04}s`,
+                  } as CSSProperties
+                }
+              />
+            )
+          })}
         </g>
 
-        {/* Mid corona */}
         <g className="gold-sun__rays gold-sun__rays--mid" filter={`url(#${id}-ray-glow)`}>
-          {coronaMid.map((ray, i) => (
-            <line
-              key={`fm${i}`}
-              x1={ray.x1}
-              y1={ray.y1}
-              x2={ray.x2}
-              y2={ray.y2}
-              stroke={INK.line}
-              strokeWidth={ray.width + 0.2}
-              strokeLinecap="round"
-              opacity={0.45 + (i % 3) * 0.08}
-            />
-          ))}
+          {coronaMid.map((ray, i) => {
+            const len = rayLen(ray.x1, ray.y1, ray.x2, ray.y2)
+            return (
+              <line
+                key={`fm${i}`}
+                x1={ray.x1}
+                y1={ray.y1}
+                x2={ray.x2}
+                y2={ray.y2}
+                stroke={INK.line}
+                strokeWidth={ray.width + 0.2}
+                strokeLinecap="round"
+                opacity={0.45 + (i % 3) * 0.08}
+                className="gold-sun__ray-draw"
+                style={
+                  {
+                    '--ray-len': len,
+                    '--ray-dur': '1.1s',
+                    '--ray-delay': `${0.35 + (i % 10) * 0.035}s`,
+                  } as CSSProperties
+                }
+              />
+            )
+          })}
         </g>
 
-        {/* Solar disc */}
         <g filter={`url(#${id}-disc-glow)`}>
-          <circle cx={CX} cy={CY} r={112} fill={`url(#${id}-core)`} />
-          <circle cx={CX} cy={CY} r={112} fill={`url(#${id}-disc-shade)`} />
+          <circle cx={CX} cy={CY} r={DISC_R} fill={`url(#${id}-core)`} />
+          <circle cx={CX} cy={CY} r={DISC_R} fill={`url(#${id}-disc-shade)`} />
 
           <g stroke={INK.deep} strokeWidth="0.35" strokeLinecap="round" opacity="0.35">
             {radialHatch.map((l, i) => (
@@ -132,42 +170,52 @@ export function GoldSun() {
             ))}
           </g>
 
-          {/* Leonardo-style study rings */}
           <circle cx={CX} cy={CY} r={72} stroke={INK.mid} strokeWidth="0.45" opacity="0.4" fill="none" />
           <circle cx={CX} cy={CY} r={48} stroke={INK.line} strokeWidth="0.4" opacity="0.35" fill="none" />
           <circle cx={CX} cy={CY} r={24} stroke={INK.bright} strokeWidth="0.35" opacity="0.45" fill="none" />
 
-          {/* Faculae — bright ink spots */}
           <circle cx={228} cy={228} r={4} fill={INK.flare} opacity="0.5" />
           <circle cx={268} cy={242} r={3} fill={INK.bright} opacity="0.4" />
           <circle cx={248} cy={268} r={2.5} fill={INK.flare} opacity="0.45" />
           <ellipse cx={235} cy={255} rx={5} ry={3} fill={INK.flare} opacity="0.25" />
         </g>
 
-        {/* Inner burst rays */}
         <g className="gold-sun__rays gold-sun__rays--inner" strokeLinecap="round">
-          {buildCoronaRays(CX, CY, 16, 112, 138, 0).map((ray, i) => (
-            <line
-              key={`in${i}`}
-              x1={ray.x1}
-              y1={ray.y1}
-              x2={ray.x2}
-              y2={ray.y2}
-              stroke={INK.flare}
-              strokeWidth={1.2}
-              opacity={0.65}
-            />
-          ))}
+          {innerRays.map((ray, i) => {
+            const len = rayLen(ray.x1, ray.y1, ray.x2, ray.y2)
+            return (
+              <line
+                key={`in${i}`}
+                x1={ray.x1}
+                y1={ray.y1}
+                x2={ray.x2}
+                y2={ray.y2}
+                stroke={INK.flare}
+                strokeWidth={1.2}
+                opacity={0.65}
+                className="gold-sun__ray-draw"
+                style={
+                  {
+                    '--ray-len': len,
+                    '--ray-dur': '0.85s',
+                    '--ray-delay': `${1.1 + (i % 8) * 0.05}s`,
+                  } as CSSProperties
+                }
+              />
+            )
+          })}
         </g>
 
         <circle
           cx={CX}
           cy={CY}
-          r={112}
+          r={DISC_R}
           stroke={INK.deep}
           strokeWidth="1"
           fill="none"
           opacity="0.75"
+          className="gold-sun__disc-draw"
+          style={{ ['--disc-len' as string]: discLen }}
         />
       </svg>
     </div>
