@@ -1101,29 +1101,42 @@ body:has(.hero) {
 .intake-modal-overlay {
   position: fixed;
   inset: 0;
-  background:
-    radial-gradient(ellipse 70% 55% at 50% 35%, rgba(212, 175, 55, 0.08) 0%, transparent 55%),
-    rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.45);
   z-index: 40;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5rem;
+  padding: 0.75rem;
+  overflow: hidden;
+}
+
+.intake-space-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.intake-space-bg .hero-bg {
+  position: absolute;
+  inset: 0;
 }
 
 .intake-modal {
   position: relative;
-  width: min(860px, 96vw);
-  max-height: 92vh;
-  overflow-y: auto;
-  padding: clamp(2.25rem, 5vw, 3.25rem) clamp(1.75rem, 4vw, 3rem);
-  border-color: rgba(212, 175, 55, 0.32);
+  z-index: 1;
+  width: min(720px, 100%);
+  max-height: calc(100dvh - 1.5rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 1.25rem 1.5rem 1rem;
+  border-color: rgba(212, 175, 55, 0.28);
+  background: rgba(0, 0, 0, 0.72);
   box-shadow:
-    0 0 0 1px rgba(212, 175, 55, 0.12),
-    0 0 48px rgba(212, 175, 55, 0.14),
-    0 0 100px rgba(212, 175, 55, 0.07),
-    0 28px 72px rgba(0, 0, 0, 0.7);
+    0 0 0 1px rgba(212, 175, 55, 0.1),
+    0 0 32px rgba(212, 175, 55, 0.1),
+    0 20px 48px rgba(0, 0, 0, 0.65);
   isolation: isolate;
 }
 
@@ -1132,7 +1145,7 @@ body:has(.hero) {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(ellipse 90% 45% at 50% 0%, rgba(212, 175, 55, 0.14) 0%, transparent 62%);
+  background: radial-gradient(ellipse 90% 40% at 50% 0%, rgba(212, 175, 55, 0.1) 0%, transparent 58%);
   pointer-events: none;
   z-index: 0;
 }
@@ -1144,88 +1157,131 @@ body:has(.hero) {
 
 .intake-header {
   position: relative;
+  flex-shrink: 0;
   text-align: center;
-  margin-bottom: 2rem;
-  padding: 0.5rem 0.5rem 1.75rem;
+  margin-bottom: 0.65rem;
+  padding: 0 0.25rem 0.35rem;
 }
 
 .intake-header::after {
   content: '';
   position: absolute;
   left: 50%;
-  top: 42%;
+  top: 45%;
   transform: translate(-50%, -50%);
-  width: min(100%, 580px);
-  height: 220px;
-  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.28) 0%, transparent 68%);
-  filter: blur(36px);
+  width: min(100%, 420px);
+  height: 140px;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+  filter: blur(28px);
   z-index: -1;
   pointer-events: none;
-  animation: intakeAuraPulse 5s ease-in-out infinite;
+  animation: intakeAuraPulse 6s ease-in-out infinite;
 }
 
 @keyframes intakeAuraPulse {
   0%,
   100% {
-    opacity: 0.55;
-    transform: translate(-50%, -50%) scale(0.96);
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(0.98);
   }
   50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.06);
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1.04);
   }
 }
 
 .intake-header .hero-badge {
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  padding: 0.5rem 1.25rem;
-  margin-bottom: 2rem;
-  box-shadow:
-    0 0 20px rgba(212, 175, 55, 0.25),
-    inset 0 0 12px rgba(212, 175, 55, 0.06);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.9rem;
+  margin-bottom: 0.65rem;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.18);
 }
 
 .intake-header h1 {
-  font-size: clamp(2.1rem, 6vw, 3.35rem);
+  font-size: clamp(1.55rem, 4.2vw, 2.15rem);
   font-weight: 700;
-  line-height: 1.12;
-  margin-bottom: 1.15rem;
-  max-width: 18ch;
+  line-height: 1.14;
+  margin-bottom: 0.45rem;
+  max-width: 22ch;
   margin-left: auto;
   margin-right: auto;
-  background: linear-gradient(
-    135deg,
-    #fffef8 0%,
-    var(--accent-light) 38%,
-    var(--accent) 72%,
-    var(--gold-dim) 100%
-  );
+  background: linear-gradient(135deg, #faf8f2, var(--accent-light), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 28px rgba(212, 175, 55, 0.35));
+  filter: drop-shadow(0 0 18px rgba(212, 175, 55, 0.22));
 }
 
-.intake-header .hero-subtitle {
-  font-size: clamp(1.1rem, 2.8vw, 1.45rem);
-  line-height: 1.5;
-  max-width: 36rem;
+.intake-header .intake-header-tagline {
+  font-size: clamp(0.88rem, 2vw, 1rem);
+  line-height: 1.4;
+  max-width: 28rem;
   margin: 0 auto;
-  color: var(--accent-light);
-  text-shadow: 0 0 24px rgba(212, 175, 55, 0.2);
+  color: var(--text-secondary);
+  text-shadow: none;
 }
 
 .intake-progress {
+  flex-shrink: 0;
   display: flex;
   justify-content: center;
-  gap: 0.65rem;
-  margin-bottom: 1.5rem;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.intake-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0 -0.25rem;
+  padding: 0 0.25rem;
+}
+
+.intake-modal--step-0 .intake-body {
+  overflow-y: visible;
+}
+
+.intake-modal--step-1 .intake-header,
+.intake-modal--step-2 .intake-header {
+  margin-bottom: 0.4rem;
+  padding-bottom: 0;
+}
+
+.intake-modal--step-1 .intake-header::after,
+.intake-modal--step-2 .intake-header::after {
+  height: 90px;
+  opacity: 0.4;
+}
+
+.intake-modal--step-1 .intake-header .hero-badge,
+.intake-modal--step-2 .intake-header .hero-badge {
+  margin-bottom: 0.4rem;
+  font-size: 0.68rem;
+  padding: 0.28rem 0.75rem;
+}
+
+.intake-modal--step-1 .intake-header h1,
+.intake-modal--step-2 .intake-header h1 {
+  font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+  margin-bottom: 0;
+  max-width: none;
+  filter: none;
+}
+
+.intake-modal--step-1 .intake-header-tagline,
+.intake-modal--step-2 .intake-header-tagline {
+  display: none;
+}
+
+.intake-modal--step-1 .intake-progress,
+.intake-modal--step-2 .intake-progress {
+  margin-bottom: 0.5rem;
 }
 
 .intake-dot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: var(--navy-700);
   transition: all 0.25s ease;
@@ -1234,9 +1290,9 @@ body:has(.hero) {
 .intake-dot--active {
   background: var(--accent);
   box-shadow:
-    0 0 0 4px rgba(212, 175, 55, 0.28),
-    0 0 14px rgba(212, 175, 55, 0.55);
-  transform: scale(1.3);
+    0 0 0 3px rgba(212, 175, 55, 0.22),
+    0 0 10px rgba(212, 175, 55, 0.4);
+  transform: scale(1.2);
 }
 
 .intake-dot--done {
@@ -1262,42 +1318,80 @@ body:has(.hero) {
 }
 
 .intake-card {
-  padding: 1.5rem;
+  padding: 0.85rem 1rem 0.65rem;
 }
 
 .intake-card h2 {
-  font-size: 1.45rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
   color: var(--accent-light);
 }
 
 .intake-subtitle {
   color: var(--text-secondary);
-  font-size: 0.9rem;
-  margin-bottom: 1.25rem;
+  font-size: 0.82rem;
+  margin-bottom: 0.65rem;
+  line-height: 1.4;
 }
 
 .intake-options {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.45rem;
+}
+
+.intake-modal--step-1 .intake-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+@media (max-width: 540px) {
+  .intake-modal--step-1 .intake-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+.intake-modal--step-2 .intake-options {
+  gap: 0.35rem;
 }
 
 .intake-option-card {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.65rem;
   text-align: left;
-  padding: 1rem 1.15rem;
+  padding: 0.55rem 0.75rem;
   border-radius: var(--radius);
   border: 1.5px solid var(--surface-border);
   background: rgba(255, 255, 255, 0.04);
   color: var(--text-primary);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 500;
   transition: all 0.25s ease;
   width: 100%;
+}
+
+.intake-modal--step-1 .intake-option-card {
+  padding: 0.5rem 0.65rem;
+  font-size: 0.8rem;
+  gap: 0.5rem;
+}
+
+.intake-modal--step-1 .intake-option-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.intake-modal--step-1 .intake-option-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.intake-modal--step-2 .intake-option-card {
+  padding: 0.45rem 0.7rem;
+  font-size: 0.82rem;
 }
 
 .intake-option-card:hover {
@@ -1374,10 +1468,12 @@ body:has(.hero) {
 }
 
 .intake-nav {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   gap: 0.75rem;
-  margin-top: 1.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
 }
 
 /* Glossary */

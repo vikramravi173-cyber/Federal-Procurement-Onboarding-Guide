@@ -7,6 +7,7 @@ import type {
   UserProfile,
 } from '../data/types'
 import { useRipple } from '../hooks/useRipple'
+import { HeroBackground } from './HeroBackground'
 import { IntakeIcon, type IntakeIconName } from './IntakeIcon'
 
 interface IntakeFormProps {
@@ -116,11 +117,19 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
 
   return (
     <div className="intake-modal-overlay">
-      <div className="intake-modal glass-card" role="dialog" aria-modal="true" aria-labelledby="intake-title">
+      <div className="intake-space-bg" aria-hidden="true">
+        <HeroBackground />
+      </div>
+      <div
+        className={`intake-modal glass-card intake-modal--step-${step}`}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="intake-title"
+      >
         <div className="intake-header">
           <div className="hero-badge">Getting Started</div>
           <h1 id="intake-title">Federal Contract Procurement Guide for Small Businesses</h1>
-          <p className="hero-subtitle">
+          <p className="hero-subtitle intake-header-tagline">
             Answer 3 quick questions so we can personalize your roadmap.
           </p>
         </div>
@@ -134,65 +143,67 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
           ))}
         </div>
 
-        <div
-          key={step}
-          className={`intake-slide intake-slide--${slideDir}`}
-        >
-          <div className="intake-card glass-card-inner">
-            <h2>{current.title}</h2>
-            <p className="intake-subtitle">{current.subtitle}</p>
+        <div className="intake-body">
+          <div
+            key={step}
+            className={`intake-slide intake-slide--${slideDir}`}
+          >
+            <div className="intake-card glass-card-inner">
+              <h2>{current.title}</h2>
+              <p className="intake-subtitle">{current.subtitle}</p>
 
-            <div className="intake-options">
-              {current.options.map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  className={`intake-option-card${current.value === opt.value ? ' intake-option-card--selected' : ''}`}
-                  onClick={(e) => {
-                    ripple(e)
-                    current.setValue(opt.value as never)
-                  }}
-                >
-                  <IntakeIcon name={opt.icon} />
-                  <span className="intake-option-label">{opt.label}</span>
-                  {current.value === opt.value && (
-                    <span className="intake-option-check" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                        <polyline points="20 6 9 17 4 12" className="check-draw" />
-                      </svg>
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-
-            {step === 2 && designation === 'multiple' && (
-              <div className="intake-multi">
-                <p className="intake-multi-label">Select all that apply:</p>
-                <div className="intake-multi-grid">
-                  {multiOptions.map((opt) => (
-                    <button
-                      key={opt.value}
-                      type="button"
-                      className={`intake-option-card intake-option-card--compact${multipleDesignations.includes(opt.value) ? ' intake-option-card--selected' : ''}`}
-                      onClick={(e) => {
-                        ripple(e)
-                        toggleMulti(opt.value)
-                      }}
-                    >
-                      <span className="intake-option-label">{opt.label}</span>
-                      {multipleDesignations.includes(opt.value) && (
-                        <span className="intake-option-check" aria-hidden="true">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                            <polyline points="20 6 9 17 4 12" className="check-draw" />
-                          </svg>
-                        </span>
-                      )}
-                    </button>
-                  ))}
-                </div>
+              <div className="intake-options">
+                {current.options.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    className={`intake-option-card${current.value === opt.value ? ' intake-option-card--selected' : ''}`}
+                    onClick={(e) => {
+                      ripple(e)
+                      current.setValue(opt.value as never)
+                    }}
+                  >
+                    <IntakeIcon name={opt.icon} />
+                    <span className="intake-option-label">{opt.label}</span>
+                    {current.value === opt.value && (
+                      <span className="intake-option-check" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                          <polyline points="20 6 9 17 4 12" className="check-draw" />
+                        </svg>
+                      </span>
+                    )}
+                  </button>
+                ))}
               </div>
-            )}
+
+              {step === 2 && designation === 'multiple' && (
+                <div className="intake-multi">
+                  <p className="intake-multi-label">Select all that apply:</p>
+                  <div className="intake-multi-grid">
+                    {multiOptions.map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        className={`intake-option-card intake-option-card--compact${multipleDesignations.includes(opt.value) ? ' intake-option-card--selected' : ''}`}
+                        onClick={(e) => {
+                          ripple(e)
+                          toggleMulti(opt.value)
+                        }}
+                      >
+                        <span className="intake-option-label">{opt.label}</span>
+                        {multipleDesignations.includes(opt.value) && (
+                          <span className="intake-option-check" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                              <polyline points="20 6 9 17 4 12" className="check-draw" />
+                            </svg>
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
