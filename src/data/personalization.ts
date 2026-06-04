@@ -23,6 +23,8 @@ export function getCertificationTracks(profile: UserProfile): CertificationTrack
     veteran: ['sdvosb', 'vosb'],
     'woman-owned': ['wosb'],
     'minority-owned': ['8a'],
+    'native-american-owned': ['8a'],
+    'economically-disadvantaged-woman': ['wosb'],
     hubzone: ['hubzone'],
   }
 
@@ -49,6 +51,8 @@ export function isRecommendedCert(
     veteran: ['sdvosb', 'vosb'],
     'woman-owned': ['wosb'],
     'minority-owned': ['8a'],
+    'native-american-owned': ['8a'],
+    'economically-disadvantaged-woman': ['wosb'],
     hubzone: ['hubzone'],
   }
 
@@ -60,6 +64,7 @@ export function getPersonalizedSteps(profile: UserProfile): OnboardingStep[] {
     ...step,
     industryNote: step.industryNotes?.[profile.industry],
     structureNote: step.structureNotes?.[profile.businessStructure],
+    designationNote: step.designationNotes?.[profile.designation],
   }))
 }
 
@@ -81,6 +86,9 @@ export function getIndustryLabel(industry: IndustryCategory): string {
     'professional-services': 'Professional Services',
     manufacturing: 'Manufacturing',
     healthcare: 'Healthcare',
+    'transportation-logistics': 'Transportation & Logistics',
+    'facilities-maintenance': 'Facilities & Maintenance',
+    'education-training': 'Education & Training',
     other: 'Other',
   }
   return labels[industry]
@@ -102,6 +110,8 @@ export function getDesignationLabel(designation: BusinessDesignation): string {
     veteran: 'Veteran-Owned (SDVOSB/VOSB)',
     'woman-owned': 'Woman-Owned (WOSB)',
     'minority-owned': 'Minority-Owned (8(a) eligible)',
+    'native-american-owned': 'Native American-Owned (8(a) eligible)',
+    'economically-disadvantaged-woman': 'Economically Disadvantaged Woman-Owned (EDWOSB)',
     hubzone: 'HUBZone Located',
     multiple: 'Multiple Designations',
   }

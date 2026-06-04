@@ -6,6 +6,9 @@ export type IndustryCategory =
   | 'professional-services'
   | 'manufacturing'
   | 'healthcare'
+  | 'transportation-logistics'
+  | 'facilities-maintenance'
+  | 'education-training'
   | 'other'
 
 export type BusinessDesignation =
@@ -13,6 +16,8 @@ export type BusinessDesignation =
   | 'veteran'
   | 'woman-owned'
   | 'minority-owned'
+  | 'native-american-owned'
+  | 'economically-disadvantaged-woman'
   | 'hubzone'
   | 'multiple'
 
@@ -36,8 +41,10 @@ export interface OnboardingStep {
   section: 'core' | 'capability' | 'find-contracts' | 'bid'
   industryNote?: string
   structureNote?: string
+  designationNote?: string
   industryNotes?: Partial<Record<IndustryCategory, string>>
   structureNotes?: Partial<Record<BusinessStructure, string>>
+  designationNotes?: Partial<Record<BusinessDesignation, string>>
 }
 
 export interface CertificationTrack {

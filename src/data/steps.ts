@@ -27,6 +27,18 @@ export const onboardingSteps: OnboardingStep[] = [
         'Manufacturing size standards range from 500 to 1,500 employees depending on sub-sector. Employee count, not revenue, is the primary metric.',
       healthcare:
         'Healthcare NAICS codes often have employee-based thresholds (1,000–1,500 employees). Medical staffing and equipment sub-sectors differ significantly.',
+      'transportation-logistics':
+        'Transportation and warehousing NAICS codes commonly use $7.5M–$34.5M revenue thresholds depending on sub-sector (e.g., 484110 General Freight Trucking, 488510 Freight Transportation Arrangement).',
+      'facilities-maintenance':
+        'Facilities support and building maintenance NAICS codes (e.g., 561210, 561720) often use $25M–$41.5M revenue thresholds. Janitorial and grounds contracts may have separate size standards.',
+      'education-training':
+        'Education and training services NAICS codes (e.g., 611430, 611420) typically use revenue-based thresholds in the $8M–$19M range. Federal training contracts often reference specific labor categories.',
+    },
+    designationNotes: {
+      'native-american-owned':
+        'Native American-owned and tribally-owned businesses may qualify for the SBA 8(a) Business Development program. SBA size standards for your NAICS code still apply.',
+      'economically-disadvantaged-woman':
+        'EDWOSBs must meet SBA size standards plus economic disadvantage criteria under the WOSB/EDWOSB program. Eligibility depends on your NAICS code and ownership structure.',
     },
   },
   {
@@ -52,6 +64,16 @@ export const onboardingSteps: OnboardingStep[] = [
         'S-corps must register under the corporate legal name. Ensure your responsible party and officer information matches your corporate records.',
       'c-corp':
         'C-corps must register under the corporate legal name. You will need your EIN, state of incorporation, and corporate officer details.',
+    },
+    designationNotes: {
+      veteran:
+        'In SAM.gov you can self-represent as VOSB and/or SDVOSB. VA-verified SDVOSB status is required for some VA set-aside contracts.',
+      'native-american-owned':
+        'Ensure SAM entity records match SBA 8(a) application data. Tribally-owned entities follow SBA regulations for 8(a) participation.',
+      'economically-disadvantaged-woman':
+        'WOSB/EDWOSB representations in SAM must align with SBA certification rules for your NAICS codes (self-certification or third-party, per SBA lists).',
+      hubzone:
+        'HUBZone certification requires your principal office and employee residency to meet SBA HUBZone requirements before representing status in SAM.',
     },
   },
   {
@@ -98,6 +120,22 @@ export const onboardingSteps: OnboardingStep[] = [
         'Common codes: 621111 (Offices of Physicians), 621610 (Home Health Care), 339112 (Surgical/Medical Instrument Manufacturing).',
       other:
         'If your industry doesn\'t fit neatly, search the NAICS manual by keyword. Select the code that best describes what you actually sell to the government, not what you aspire to do.',
+      'transportation-logistics':
+        'Common codes: 484110 (General Freight Trucking), 484121 (General Freight Long-Distance), 488510 (Freight Transportation Arrangement), 493110 (General Warehousing).',
+      'facilities-maintenance':
+        'Common codes: 561210 (Facilities Support Services), 561720 (Janitorial Services), 561730 (Landscaping), 238220 (Plumbing/HVAC when maintenance-focused).',
+      'education-training':
+        'Common codes: 611430 (Professional and Management Development Training), 611420 (Computer Training), 611519 (Other Technical and Trade Schools).',
+    },
+    designationNotes: {
+      'woman-owned':
+        'WOSB set-aside contracts are limited to NAICS codes on the SBA WOSB/EDWOSB eligible industries list — verify your codes before bidding.',
+      'economically-disadvantaged-woman':
+        'EDWOSB set-asides also require your NAICS to appear on the SBA eligible industries list at certify.sba.gov.',
+      'minority-owned':
+        '8(a) and minority-owned set-asides still require accurate NAICS selection — your codes determine which solicitations appear in searches.',
+      'native-american-owned':
+        'Tribally-owned and Native American-owned firms select NAICS codes reflecting commercial activity reviewed under 8(a) guidelines.',
     },
   },
   {
@@ -152,6 +190,14 @@ export const onboardingSteps: OnboardingStep[] = [
     whyItMatters:
       'Contracting officers and prime contractors review dozens of vendors. A clear capability statement helps you stand out, gets you on vendor lists, and is often requested before you are invited to bid or subcontract on a project.',
     section: 'capability',
+    industryNotes: {
+      'transportation-logistics':
+        'Highlight fleet capacity, safety record (FMCSA data if applicable), geographic coverage, and any GSA Fleet or freight contract experience.',
+      'facilities-maintenance':
+        'Highlight facilities cleared personnel (if any), geographic coverage, staffing capacity, and experience with federal building maintenance or janitorial contracts.',
+      'education-training':
+        'List instructor qualifications, curriculum areas, past federal or agency training contracts, and applicable NAICS codes for the training you deliver.',
+    },
   },
   {
     id: 'submit-bid',
@@ -168,6 +214,28 @@ export const onboardingSteps: OnboardingStep[] = [
     whyItMatters:
       'This is where preparation becomes action. Your first bid teaches you more than any guide — you will learn what agencies expect, how to price competitively, and how to improve for the next opportunity. Every successful contractor started with a first submission.',
     section: 'bid',
+    industryNotes: {
+      'transportation-logistics':
+        'Transportation solicitations often require proof of insurance, DOT registration, and past performance on similar routes or schedules — gather these before the deadline.',
+      'facilities-maintenance':
+        'Facilities bids frequently require staffing plans, wage determination compliance (Service Contract Act), and transition plans — review labor clauses early.',
+      'education-training':
+        'Training proposals typically require detailed curricula, instructor resumes, and per-seat or per-hour pricing — match the evaluation criteria in the solicitation.',
+    },
+    designationNotes: {
+      veteran:
+        'Set-aside solicitations for SDVOSB or VOSB will require representation in SAM and may require VA VetBiz verification for VA contracts.',
+      'woman-owned':
+        'WOSB set-aside solicitations require active WOSB certification (or approved self-certification) for the solicitation NAICS code.',
+      'economically-disadvantaged-woman':
+        'EDWOSB set-aside solicitations require meeting EDWOSB eligibility and certification requirements for the listed NAICS code.',
+      'minority-owned':
+        '8(a) sole-source and set-aside opportunities require active 8(a) certification through certify.sba.gov.',
+      'native-american-owned':
+        '8(a) opportunities require active 8(a) certification; tribally-owned entities must meet SBA ownership and control requirements.',
+      hubzone:
+        'HUBZone set-aside solicitations require active HUBZone certification and HUBZone representation in SAM.gov.',
+    },
   },
 ]
 

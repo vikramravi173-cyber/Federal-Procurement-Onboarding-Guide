@@ -97,6 +97,11 @@ export function StepCard({
             <strong>For your business structure:</strong> {step.structureNote}
           </p>
         )}
+        {step.designationNote && (
+          <p className="personalized-note">
+            <strong>For your designation:</strong> {step.designationNote}
+          </p>
+        )}
       </div>
 
       {isCapability && (

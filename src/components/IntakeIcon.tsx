@@ -8,11 +8,16 @@ export type IntakeIconName =
   | 'professional-services'
   | 'manufacturing'
   | 'healthcare'
+  | 'transportation-logistics'
+  | 'facilities-maintenance'
+  | 'education-training'
   | 'other'
   | 'none'
   | 'veteran'
   | 'woman-owned'
   | 'minority-owned'
+  | 'native-american-owned'
+  | 'economically-disadvantaged-woman'
   | 'hubzone'
   | 'multiple'
 
@@ -95,6 +100,24 @@ export function IntakeIcon({ name }: IntakeIconProps) {
             <path d="M12 8v8M9 11h6" />
           </>
         )}
+        {name === 'transportation-logistics' && (
+          <>
+            <path d="M3 12h12l3-4H20l2 4h-1" />
+            <circle cx="7" cy="17" r="2" />
+            <circle cx="17" cy="17" r="2" />
+          </>
+        )}
+        {name === 'facilities-maintenance' && (
+          <>
+            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+          </>
+        )}
+        {name === 'education-training' && (
+          <>
+            <path d="M22 10v6M2 10l10-6 10 6-10 6z" />
+            <path d="M6 12v5c0 1 2 3 6 3s6-2 6-3v-5" />
+          </>
+        )}
         {name === 'other' && (
           <>
             <circle cx="8" cy="8" r="2" />
@@ -128,6 +151,19 @@ export function IntakeIcon({ name }: IntakeIconProps) {
             <circle cx="9" cy="9" r="2.5" />
             <circle cx="15" cy="9" r="2.5" />
             <path d="M5 19v-1a4 4 0 0 1 4-3.5M15 14.5a4 4 0 0 1 4 3.5V19" />
+          </>
+        )}
+        {name === 'native-american-owned' && (
+          <>
+            <path d="M12 3c-1.5 2-4 4-4 7a4 4 0 0 0 8 0c0-3-2.5-5-4-7z" />
+            <path d="M8 21h8" />
+          </>
+        )}
+        {name === 'economically-disadvantaged-woman' && (
+          <>
+            <circle cx="12" cy="7" r="2.75" />
+            <path d="M7 19v-1.25a5 5 0 0 1 10 0V19" />
+            <path d="M12 11v1.5M10 13h4" />
           </>
         )}
         {name === 'hubzone' && (

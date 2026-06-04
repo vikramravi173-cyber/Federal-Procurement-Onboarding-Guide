@@ -16,7 +16,7 @@ export const certificationTracks: CertificationTrack[] = [
     setAsideValue: '$50 billion+ in 8(a) sole-source and set-aside contracts annually',
     applyUrl: 'https://certify.sba.gov/',
     applyLabel: 'Apply at certify.sba.gov',
-    designations: ['none', 'minority-owned', 'multiple'],
+    designations: ['none', 'minority-owned', 'native-american-owned', 'multiple'],
   },
   {
     id: 'hubzone',
@@ -48,7 +48,7 @@ export const certificationTracks: CertificationTrack[] = [
     setAsideValue: '$28 billion+ in WOSB set-aside contracts annually; 5% federal contracting goal for women-owned small businesses',
     applyUrl: 'https://certify.sba.gov/',
     applyLabel: 'Apply at certify.sba.gov',
-    designations: ['none', 'woman-owned', 'multiple'],
+    designations: ['none', 'woman-owned', 'economically-disadvantaged-woman', 'multiple'],
   },
   {
     id: 'sdvosb',

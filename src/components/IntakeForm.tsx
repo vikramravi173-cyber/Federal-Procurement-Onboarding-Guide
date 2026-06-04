@@ -26,6 +26,9 @@ const industries: { value: IndustryCategory; label: string; icon: IntakeIconName
   { value: 'professional-services', label: 'Professional Services', icon: 'professional-services' },
   { value: 'manufacturing', label: 'Manufacturing', icon: 'manufacturing' },
   { value: 'healthcare', label: 'Healthcare', icon: 'healthcare' },
+  { value: 'transportation-logistics', label: 'Transportation & Logistics', icon: 'transportation-logistics' },
+  { value: 'facilities-maintenance', label: 'Facilities & Maintenance', icon: 'facilities-maintenance' },
+  { value: 'education-training', label: 'Education & Training', icon: 'education-training' },
   { value: 'other', label: 'Other', icon: 'other' },
 ]
 
@@ -33,7 +36,9 @@ const designations: { value: BusinessDesignation; label: string; icon: IntakeIco
   { value: 'none', label: 'None / Not sure yet', icon: 'none' },
   { value: 'veteran', label: 'Veteran-Owned (SDVOSB / VOSB)', icon: 'veteran' },
   { value: 'woman-owned', label: 'Woman-Owned (WOSB)', icon: 'woman-owned' },
+  { value: 'economically-disadvantaged-woman', label: 'Economically Disadvantaged Woman-Owned (EDWOSB)', icon: 'economically-disadvantaged-woman' },
   { value: 'minority-owned', label: 'Minority-Owned (8(a) eligible)', icon: 'minority-owned' },
+  { value: 'native-american-owned', label: 'Native American-Owned (8(a) eligible)', icon: 'native-american-owned' },
   { value: 'hubzone', label: 'HUBZone Located', icon: 'hubzone' },
   { value: 'multiple', label: 'Multiple Designations', icon: 'multiple' },
 ]
