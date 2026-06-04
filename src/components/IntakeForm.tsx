@@ -7,34 +7,35 @@ import type {
   UserProfile,
 } from '../data/types'
 import { useRipple } from '../hooks/useRipple'
+import { IntakeIcon, type IntakeIconName } from './IntakeIcon'
 
 interface IntakeFormProps {
   onComplete: (profile: UserProfile) => void
 }
 
-const structures: { value: BusinessStructure; label: string; icon: string }[] = [
-  { value: 'sole-proprietor', label: 'Sole Proprietor', icon: '👤' },
-  { value: 'llc', label: 'LLC', icon: '🏢' },
-  { value: 's-corp', label: 'S-Corp', icon: '📊' },
-  { value: 'c-corp', label: 'C-Corp', icon: '🏛️' },
+const structures: { value: BusinessStructure; label: string; icon: IntakeIconName }[] = [
+  { value: 'sole-proprietor', label: 'Sole Proprietor', icon: 'sole-proprietor' },
+  { value: 'llc', label: 'LLC', icon: 'llc' },
+  { value: 's-corp', label: 'S-Corp', icon: 's-corp' },
+  { value: 'c-corp', label: 'C-Corp', icon: 'c-corp' },
 ]
 
-const industries: { value: IndustryCategory; label: string; icon: string }[] = [
-  { value: 'construction', label: 'Construction', icon: '🏗️' },
-  { value: 'it-tech', label: 'IT / Tech', icon: '💻' },
-  { value: 'professional-services', label: 'Professional Services', icon: '📋' },
-  { value: 'manufacturing', label: 'Manufacturing', icon: '⚙️' },
-  { value: 'healthcare', label: 'Healthcare', icon: '🏥' },
-  { value: 'other', label: 'Other', icon: '✨' },
+const industries: { value: IndustryCategory; label: string; icon: IntakeIconName }[] = [
+  { value: 'construction', label: 'Construction', icon: 'construction' },
+  { value: 'it-tech', label: 'IT / Tech', icon: 'it-tech' },
+  { value: 'professional-services', label: 'Professional Services', icon: 'professional-services' },
+  { value: 'manufacturing', label: 'Manufacturing', icon: 'manufacturing' },
+  { value: 'healthcare', label: 'Healthcare', icon: 'healthcare' },
+  { value: 'other', label: 'Other', icon: 'other' },
 ]
 
-const designations: { value: BusinessDesignation; label: string; icon: string }[] = [
-  { value: 'none', label: 'None / Not sure yet', icon: '❓' },
-  { value: 'veteran', label: 'Veteran-Owned (SDVOSB / VOSB)', icon: '🎖️' },
-  { value: 'woman-owned', label: 'Woman-Owned (WOSB)', icon: '👩‍💼' },
-  { value: 'minority-owned', label: 'Minority-Owned (8(a) eligible)', icon: '🤝' },
-  { value: 'hubzone', label: 'HUBZone Located', icon: '📍' },
-  { value: 'multiple', label: 'Multiple Designations', icon: '⭐' },
+const designations: { value: BusinessDesignation; label: string; icon: IntakeIconName }[] = [
+  { value: 'none', label: 'None / Not sure yet', icon: 'none' },
+  { value: 'veteran', label: 'Veteran-Owned (SDVOSB / VOSB)', icon: 'veteran' },
+  { value: 'woman-owned', label: 'Woman-Owned (WOSB)', icon: 'woman-owned' },
+  { value: 'minority-owned', label: 'Minority-Owned (8(a) eligible)', icon: 'minority-owned' },
+  { value: 'hubzone', label: 'HUBZone Located', icon: 'hubzone' },
+  { value: 'multiple', label: 'Multiple Designations', icon: 'multiple' },
 ]
 
 const multiOptions: { value: CertificationId; label: string }[] = [
@@ -146,9 +147,7 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
                     current.setValue(opt.value as never)
                   }}
                 >
-                  <span className="intake-option-icon" aria-hidden="true">
-                    {opt.icon}
-                  </span>
+                  <IntakeIcon name={opt.icon} />
                   <span className="intake-option-label">{opt.label}</span>
                   {current.value === opt.value && (
                     <span className="intake-option-check" aria-hidden="true">

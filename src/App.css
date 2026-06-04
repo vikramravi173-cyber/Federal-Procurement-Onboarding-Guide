@@ -1235,8 +1235,28 @@ body:has(.hero) {
 }
 
 .intake-option-icon {
-  font-size: 1.5rem;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--accent-light);
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.intake-option-icon svg {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.intake-option-card--selected .intake-option-icon {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: rgba(212, 175, 55, 0.45);
+  color: var(--accent);
 }
 
 .intake-option-label {
