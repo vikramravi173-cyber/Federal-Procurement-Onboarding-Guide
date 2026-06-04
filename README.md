@@ -1,4 +1,4 @@
-# Federal Contract Procurement Guide for small businesses
+# Federal Contract Procurement Guide for Small Businesses
 
 A multi-step interactive guide to help small businesses navigate the federal contracting process.
 
