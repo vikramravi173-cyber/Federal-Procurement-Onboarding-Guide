@@ -1492,13 +1492,26 @@ body:has(.hero) {
   overflow: hidden;
   padding: 32px;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   background: rgba(8, 8, 8, 0.88);
   backdrop-filter: blur(20px);
   box-shadow:
     0 24px 64px rgba(0, 0, 0, 0.55),
     0 8px 24px rgba(0, 0, 0, 0.35);
   isolation: isolate;
+}
+
+.intake-modal__frame {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.intake-modal > :not(.intake-modal__frame) {
+  position: relative;
+  z-index: 1;
 }
 
 .intake-header {
@@ -1655,12 +1668,38 @@ body:has(.hero) {
   }
 }
 
+.intake-callout {
+  position: relative;
+  margin-bottom: 1rem;
+  padding: 0.7rem 0.85rem 0.7rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0 10px 10px 0;
+}
+
+.intake-callout::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--gold-dim), var(--accent));
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 0.55s ease 0.12s;
+}
+
+.intake-callout--draw::before {
+  transform: scaleY(1);
+}
+
 .intake-subtitle {
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 400;
   color: rgba(212, 175, 55, 0.55);
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   line-height: 1.45;
 }
 
@@ -1763,8 +1802,23 @@ body:has(.hero) {
 
 .intake-multi {
   margin-top: 1.25rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem 0.85rem 0.25rem 1rem;
+  border-top: none;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0 10px 10px 0;
+  position: relative;
+}
+
+.intake-multi::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--gold-dim), var(--accent));
+  opacity: 0.85;
 }
 
 .intake-multi-label {

@@ -6,6 +6,7 @@ import type {
   IndustryCategory,
   UserProfile,
 } from '../data/types'
+import { GoldFrameBorder } from './GoldFrameBorder'
 import { IntakeSpaceBackground } from './IntakeSpaceBackground'
 import { IntakeIcon, type IntakeIconName } from './IntakeIcon'
 
@@ -140,6 +141,10 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
         aria-modal="true"
         aria-labelledby="intake-title"
       >
+        <div className="intake-modal__frame" aria-hidden="true">
+          <GoldFrameBorder key={step} />
+        </div>
+
         <div className="intake-header">
           <div className="hero-badge">Getting Started</div>
           <h1 id="intake-title">Federal Contract Procurement Guide for Small Businesses</h1>
@@ -165,7 +170,9 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
           <div className={`intake-slide ${slideClass}`}>
             <div className="intake-question">
               <h2 className="intake-question-title">{current.title}</h2>
-              <p className="intake-subtitle">{current.subtitle}</p>
+              <div className={`intake-callout${slidePhase === 'enter' ? ' intake-callout--draw' : ''}`}>
+                <p className="intake-subtitle">{current.subtitle}</p>
+              </div>
 
               <div className="intake-options">
                 {current.options.map((opt) => {

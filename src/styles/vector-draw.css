@@ -77,6 +77,34 @@
   }
 }
 
+/* Intake / modal asymmetric gold frame */
+.gold-frame-border {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.gold-frame-border .draw-stroke {
+  stroke: var(--gold, #d4af37);
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.gold-frame-border__thick {
+  stroke-width: 2.25;
+  opacity: 0.92;
+  filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.35));
+}
+
+.gold-frame-border__thin {
+  stroke-width: 0.9;
+  opacity: 0.58;
+}
+
 /* Step card corner brackets */
 .step-card-corners {
   position: absolute;
@@ -183,6 +211,7 @@
   .gold-sun--drawn .gold-sun__disc-draw,
   .gold-sun--drawn .gold-sun__frame-draw,
   .vector-shooting-star,
+  .gold-frame-border .draw-stroke,
   .step-card-corners .draw-stroke {
     stroke-dashoffset: 0 !important;
     animation: none !important;
