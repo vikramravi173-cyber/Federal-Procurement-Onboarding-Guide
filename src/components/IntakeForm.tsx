@@ -101,7 +101,7 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
     <div className="intake">
       <div className="intake-header">
         <div className="hero-badge">Getting Started</div>
-        <h1>Federal Procurement Onboarding</h1>
+        <h1>Federal Contract Procurement Guide for small businesses</h1>
         <p className="hero-subtitle">
           Answer 3 quick questions so we can personalize your roadmap.
         </p>

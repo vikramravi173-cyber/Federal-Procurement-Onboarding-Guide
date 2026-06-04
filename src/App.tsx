@@ -132,7 +132,7 @@ function App() {
     <div className="app">
       <header className="hero">
         <div className="hero-badge">Personalized Guide</div>
-        <h1>Federal Procurement Onboarding</h1>
+        <h1>Federal Contract Procurement Guide for small businesses</h1>
         <p className="hero-subtitle">
           Your roadmap as a {getStructureLabel(profile.businessStructure)} in{' '}
           {getIndustryLabel(profile.industry)}

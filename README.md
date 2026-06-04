@@ -1,4 +1,4 @@
-# Federal Procurement Onboarding Guide
+# Federal Contract Procurement Guide for small businesses
 
 A multi-step interactive guide to help small businesses navigate the federal contracting process.
 
