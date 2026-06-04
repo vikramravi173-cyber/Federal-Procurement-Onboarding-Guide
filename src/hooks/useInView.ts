@@ -12,7 +12,7 @@ export function useInView<T extends HTMLElement>(threshold = 0.12) {
       ([entry]) => {
         if (entry.isIntersecting) setInView(true)
       },
-      { threshold },
+      { threshold, rootMargin: '0px 0px -6% 0px' },
     )
 
     observer.observe(el)

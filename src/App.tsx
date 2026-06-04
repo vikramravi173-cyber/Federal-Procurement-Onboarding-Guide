@@ -21,6 +21,7 @@ import type { OnboardingStep } from './data/types'
 import { useProgressTracker } from './hooks/useProgressTracker'
 import { useRipple } from './hooks/useRipple'
 import { useUserProfile } from './hooks/useUserProfile'
+import { smoothScrollToElement } from './utils/smoothScroll'
 import './App.css'
 
 type GuideItem =
@@ -123,7 +124,7 @@ function App() {
 
   const scrollToItem = useCallback((index: number) => {
     setActiveIndex(index)
-    cardRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    smoothScrollToElement(cardRefs.current[index], { block: 'center' })
   }, [setActiveIndex])
 
   useEffect(() => {

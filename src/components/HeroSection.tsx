@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { HeroBackground } from './HeroBackground'
+import { smoothScrollToSelector } from '../utils/smoothScroll'
 
 const TYPING_PHRASES = [
   'Register on SAM.gov',
@@ -50,7 +51,7 @@ export function HeroSection({ subtitle, onResetProfile }: HeroSectionProps) {
   }, [])
 
   const scrollToGuide = () => {
-    document.querySelector('.sticky-bar')?.scrollIntoView({ behavior: 'smooth' })
+    smoothScrollToSelector('.sticky-bar', { block: 'start', offset: -8 })
   }
 
   return (

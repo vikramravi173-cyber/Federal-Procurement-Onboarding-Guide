@@ -27,6 +27,11 @@
   --warning-bg: rgba(212, 175, 55, 0.1);
   --radius: 12px;
   --radius-lg: 16px;
+  --scrollbar-track: #050505;
+  --scrollbar-track-edge: #121212;
+  --scrollbar-thumb: #d4af37;
+  --scrollbar-thumb-mid: #b8962e;
+  --scroll-progress: 0;
 }
 
 *,
@@ -38,7 +43,121 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Black & gold scrollbars — page and scrollable panels */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.intake-modal::-webkit-scrollbar,
+.completion-modal::-webkit-scrollbar,
+.glossary-list::-webkit-scrollbar,
+.cert-scroll-track::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.intake-modal::-webkit-scrollbar-track,
+.completion-modal::-webkit-scrollbar-track,
+.glossary-list::-webkit-scrollbar-track,
+.cert-scroll-track::-webkit-scrollbar-track {
+  background: linear-gradient(
+    180deg,
+    var(--scrollbar-track) 0%,
+    var(--scrollbar-track-edge) 50%,
+    var(--scrollbar-track) 100%
+  );
+  border-left: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.intake-modal::-webkit-scrollbar-thumb,
+.completion-modal::-webkit-scrollbar-thumb,
+.glossary-list::-webkit-scrollbar-thumb,
+.cert-scroll-track::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--accent-light) 0%,
+    var(--scrollbar-thumb) 42%,
+    var(--scrollbar-thumb-mid) 100%
+  );
+  border-radius: 999px;
+  border: 2px solid var(--scrollbar-track);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.35);
+  transition: box-shadow 0.35s ease, background 0.35s ease;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+.intake-modal::-webkit-scrollbar-thumb:hover,
+.completion-modal::-webkit-scrollbar-thumb:hover,
+.glossary-list::-webkit-scrollbar-thumb:hover,
+.cert-scroll-track::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #faf0c8 0%, var(--accent-light) 35%, var(--scrollbar-thumb) 100%);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+html::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+html.is-scrolling::-webkit-scrollbar-thumb,
+html.is-scrolling .intake-modal::-webkit-scrollbar-thumb,
+html.is-scrolling .completion-modal::-webkit-scrollbar-thumb,
+html.is-scrolling .glossary-list::-webkit-scrollbar-thumb,
+html.is-scrolling .cert-scroll-track::-webkit-scrollbar-thumb {
+  box-shadow:
+    0 0 18px var(--accent-glow),
+    inset 0 0 6px rgba(240, 215, 140, 0.35);
+  animation: scrollbarPulse 0.85s ease-in-out infinite;
+}
+
+@keyframes scrollbarPulse {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.18);
+  }
+}
+
+.intake-modal,
+.completion-modal,
+.glossary-list,
+.cert-scroll-track {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Gold scroll progress along the top edge */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 100;
+  pointer-events: none;
+  transform: scaleX(var(--scroll-progress, 0));
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    var(--scrollbar-thumb-mid) 0%,
+    var(--accent-light) 40%,
+    var(--scrollbar-thumb) 70%,
+    var(--accent-light) 100%
+  );
+  box-shadow: 0 0 14px var(--accent-glow), 0 1px 0 rgba(212, 175, 55, 0.25);
+}
+
+html.is-scrolling .scroll-progress {
+  box-shadow: 0 0 22px var(--accent-glow), 0 0 40px rgba(212, 175, 55, 0.25);
 }
 
 body {
@@ -131,13 +250,19 @@ input:checked + .checkbox-ui .check-draw,
 /* Reveal on scroll */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(40px) scale(0.98);
+  filter: blur(8px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform, filter;
 }
 
 .reveal--visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0);
 }
 
 /* Glass card */
@@ -164,7 +289,17 @@ input:checked + .checkbox-ui .check-draw,
   .reveal {
     opacity: 1;
     transform: none;
+    filter: none;
     transition: none;
+  }
+
+  .scroll-progress {
+    animation: none;
+    transform: scaleX(var(--scroll-progress, 0));
+  }
+
+  html.is-scrolling::-webkit-scrollbar-thumb {
+    animation: none;
   }
 
   .particle-network,
