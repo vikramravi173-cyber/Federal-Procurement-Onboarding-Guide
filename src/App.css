@@ -690,7 +690,21 @@ body:has(.hero) {
 .cert-track-card--vosb { border-top: 4px solid #8a7020; }
 
 .cert-track-icon {
-  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  color: var(--accent-light);
+  flex-shrink: 0;
+}
+
+.cert-track-icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .cert-track-title {

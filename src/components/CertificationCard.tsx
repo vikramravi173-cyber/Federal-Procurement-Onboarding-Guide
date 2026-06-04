@@ -2,14 +2,7 @@ import { useState } from 'react'
 import type { CertificationTrack } from '../data/types'
 import { useInView } from '../hooks/useInView'
 import { useRipple } from '../hooks/useRipple'
-
-const CERT_ICONS: Record<string, string> = {
-  '8a': '🏛️',
-  hubzone: '📍',
-  wosb: '👩‍💼',
-  sdvosb: '🎖️',
-  vosb: '⚔️',
-}
+import { CertTrackIcon } from './CertTrackIcon'
 
 interface CertificationCardProps {
   track: CertificationTrack
@@ -56,9 +49,7 @@ export function CertificationCard({
         </div>
       )}
 
-      <div className="cert-track-icon" aria-hidden="true">
-        {CERT_ICONS[track.id] ?? '★'}
-      </div>
+      <CertTrackIcon id={track.id} />
 
       <h2 className="cert-track-title">{track.title}</h2>
 
