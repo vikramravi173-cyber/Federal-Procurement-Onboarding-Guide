@@ -331,7 +331,7 @@ input:checked + .checkbox-ui .check-draw,
     animation: none !important;
   }
 
-  .gold-moon--pencil .gold-moon__sphere {
-    filter: drop-shadow(0 0 16px rgba(242, 235, 226, 0.12));
+  .gold-moon--vitruvian .gold-moon__sphere {
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.15));
   }
 }

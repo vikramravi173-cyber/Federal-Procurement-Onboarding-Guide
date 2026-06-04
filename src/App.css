@@ -63,13 +63,13 @@
   z-index: 1;
 }
 
-/* Pencil-study moon — Vitruvian-style graphite on vellum */
+/* Vitruvian manuscript moon — gold ink on aged vellum */
 .gold-moon {
   position: absolute;
   top: -14%;
   right: -12%;
-  width: min(46vw, 400px);
-  height: min(46vw, 400px);
+  width: min(48vw, 420px);
+  height: min(48vw, 420px);
   pointer-events: none;
   z-index: 0;
 }
@@ -80,25 +80,26 @@
   pointer-events: none;
 }
 
-.gold-moon--pencil .gold-moon__corona--outer {
-  inset: -40%;
+.gold-moon--vitruvian .gold-moon__corona--outer {
+  inset: -42%;
   background: radial-gradient(
     circle at 55% 45%,
-    rgba(242, 235, 226, 0.1) 0%,
-    rgba(212, 175, 55, 0.04) 40%,
+    rgba(212, 175, 55, 0.14) 0%,
+    rgba(220, 201, 160, 0.06) 38%,
     transparent 72%
   );
-  filter: blur(36px);
+  filter: blur(40px);
 }
 
-.gold-moon--pencil .gold-moon__corona--mid {
-  inset: -18%;
+.gold-moon--vitruvian .gold-moon__corona--mid {
+  inset: -20%;
   background: radial-gradient(
-    circle at 62% 38%,
-    rgba(255, 252, 248, 0.14) 0%,
-    transparent 58%
+    circle at 58% 42%,
+    rgba(245, 230, 184, 0.2) 0%,
+    rgba(212, 175, 55, 0.08) 45%,
+    transparent 62%
   );
-  filter: blur(14px);
+  filter: blur(18px);
 }
 
 .gold-moon__sphere {
@@ -106,21 +107,22 @@
   z-index: 1;
   width: 100%;
   height: 100%;
-  opacity: 0.94;
-  filter: drop-shadow(0 0 20px rgba(242, 235, 226, 0.15));
+  opacity: 0.97;
+  filter: drop-shadow(0 0 28px rgba(212, 175, 55, 0.22))
+    drop-shadow(0 0 56px rgba(184, 150, 46, 0.1));
   mask-image: radial-gradient(
     circle at 50% 50%,
     #000 0%,
-    #000 56%,
-    rgba(0, 0, 0, 0.45) 76%,
-    transparent 90%
+    #000 54%,
+    rgba(0, 0, 0, 0.4) 78%,
+    transparent 92%
   );
   -webkit-mask-image: radial-gradient(
     circle at 50% 50%,
     #000 0%,
-    #000 56%,
-    rgba(0, 0, 0, 0.45) 76%,
-    transparent 90%
+    #000 54%,
+    rgba(0, 0, 0, 0.4) 78%,
+    transparent 92%
   );
 }
 
