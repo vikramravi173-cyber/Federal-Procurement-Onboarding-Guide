@@ -22,6 +22,7 @@ import { useProgressTracker } from './hooks/useProgressTracker'
 import { useScrollGuideReveal } from './hooks/useScrollGuideReveal'
 import { useRipple } from './hooks/useRipple'
 import { useUserProfile } from './hooks/useUserProfile'
+import { GuideSkeleton } from './components/GuideSkeleton'
 import { IconCheck, IconSearch, IconStar } from './components/GuideIcons'
 import { smoothScrollToElement } from './utils/smoothScroll'
 import './App.css'
@@ -36,8 +37,19 @@ function App() {
   const { profile, intakeComplete, saveProfile, resetProfile } = useUserProfile()
   const [glossaryOpen, setGlossaryOpen] = useState(false)
   const [completionDismissed, setCompletionDismissed] = useState(false)
+  const [guideReady, setGuideReady] = useState(false)
   const cardRefs = useRef<(HTMLElement | null)[]>([])
   const ripple = useRipple()
+
+  useEffect(() => {
+    if (!intakeComplete || !profile) {
+      setGuideReady(false)
+      return
+    }
+    setGuideReady(false)
+    const timer = window.setTimeout(() => setGuideReady(true), 150)
+    return () => window.clearTimeout(timer)
+  }, [intakeComplete, profile])
 
   const steps = useMemo(
     () => (profile ? getPersonalizedSteps(profile) : []),
@@ -217,6 +229,10 @@ function App() {
       />
 
       <div className="site-container">
+      {!guideReady ? (
+        <GuideSkeleton />
+      ) : (
+      <>
       <div className="sticky-bar">
         <ProgressBar
           completedCount={completedCount}
@@ -396,6 +412,8 @@ function App() {
           Next →
         </button>
       </footer>
+      </>
+      )}
       </div>
 
       <Glossary open={glossaryOpen} onToggle={() => setGlossaryOpen((o) => !o)} />

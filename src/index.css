@@ -22,7 +22,7 @@
   --text-on-gold: #0a0a0a;
   --surface: rgba(255, 255, 255, 0.04);
   --surface-border: rgba(212, 175, 55, 0.18);
-  --glass-blur: blur(12px);
+  --glass-blur: blur(8px);
   --success: #c9b84a;
   --warning: #e8b84a;
   --warning-bg: rgba(212, 175, 55, 0.1);
@@ -51,8 +51,8 @@
 
   --container-max: 1100px;
   --transition-default: all 0.2s ease;
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.45);
-  --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.45);
   --tap-min: 44px;
 }
 
@@ -312,10 +312,9 @@ button {
 /* Typography */
 .type-display {
   font-family: var(--font-display);
-  font-style: italic;
   font-weight: 600;
   font-size: var(--text-display);
-  letter-spacing: 0.01em;
+  letter-spacing: -0.02em;
   line-height: 1.12;
 }
 
@@ -323,8 +322,6 @@ h1,
 h2,
 h3,
 .hero h1,
-.hero-typing,
-.hero-subtitle,
 .step-title,
 .section-header h2,
 .cert-track-title,
@@ -333,9 +330,15 @@ h3,
 .intake-card h2,
 .find-tool-card h3 {
   font-family: var(--font-display);
-  font-style: italic;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.02em;
+}
+
+.hero-typing,
+.hero-subtitle,
+.progress-label,
+.nav-indicator {
+  font-family: var(--font-body);
 }
 
 h1 {
@@ -473,19 +476,13 @@ input:checked + .checkbox-ui .check-draw,
 
 .reveal {
   opacity: 0;
-  transform: translateY(32px) scale(0.98);
-  filter: blur(8px);
-  transition:
-    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform, filter;
+  transform: translateY(16px);
+  transition: var(--transition-default);
 }
 
 .reveal--visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
+  transform: translateY(0);
 }
 
 .glass-card {

@@ -1,6 +1,6 @@
 # Federal Contract Procurement Guide for Small Businesses
 
-A multi-step interactive guide to help small businesses navigate the federal contracting process.
+A multi-step interactive guide to help small businesses sell to the federal government.
 
 ## Features
 
