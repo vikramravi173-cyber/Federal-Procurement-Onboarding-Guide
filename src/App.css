@@ -983,3 +983,37 @@
     bottom: 4.5rem;
   }
 }
+
+/* ── Sticky back/next row ── */
+.sticky-nav-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-btn--compact {
+  flex-shrink: 0;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.sticky-nav-row .step-nav {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.intake-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.intake-nav .intake-next {
+  margin-left: 0;
+}

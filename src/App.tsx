@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { CertificationCard } from './components/CertificationCard'
 import { FindContractsSection } from './components/FindContractsSection'
 import { Glossary } from './components/Glossary'
@@ -44,17 +44,6 @@ function App() {
     [profile],
   )
 
-  const {
-    completed,
-    toggle,
-    reset,
-    completedCount,
-    progress,
-    allComplete,
-    activeIndex,
-    setActiveIndex,
-  } = useProgressTracker(trackableIds)
-
   const guideItems = useMemo((): GuideItem[] => {
     if (!profile) return []
 
@@ -95,6 +84,27 @@ function App() {
     return items
   }, [steps, certs, profile])
 
+  const maxNavIndex = Math.max(0, guideItems.length - 1)
+
+  const navigableIndices = useMemo(
+    () =>
+      guideItems
+        .map((item, i) => (item.kind !== 'section-header' ? i : null))
+        .filter((i): i is number => i !== null),
+    [guideItems],
+  )
+
+  const {
+    completed,
+    toggle,
+    reset,
+    completedCount,
+    progress,
+    allComplete,
+    activeIndex,
+    setActiveIndex,
+  } = useProgressTracker(trackableIds, maxNavIndex)
+
   const navItems = useMemo(() => {
     return guideItems
       .map((item, i) => {
@@ -111,6 +121,12 @@ function App() {
     cardRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }, [setActiveIndex])
 
+  useEffect(() => {
+    if (navigableIndices.length > 0 && !navigableIndices.includes(activeIndex)) {
+      setActiveIndex(navigableIndices[0])
+    }
+  }, [navigableIndices, activeIndex, setActiveIndex])
+
   const handleReset = () => {
     reset()
     resetProfile()
@@ -120,12 +136,20 @@ function App() {
     return <IntakeForm onComplete={saveProfile} />
   }
 
-  const activeNavIndex = navItems.findIndex((n) => n.index === activeIndex)
+  const activeNavPosition = navigableIndices.indexOf(activeIndex)
+  const canGoBack = activeNavPosition > 0
+  const canGoForward = activeNavPosition >= 0 && activeNavPosition < navigableIndices.length - 1
+
   const goPrev = () => {
-    if (activeNavIndex > 0) scrollToItem(navItems[activeNavIndex - 1].index)
+    if (canGoBack) scrollToItem(navigableIndices[activeNavPosition - 1])
   }
   const goNext = () => {
-    if (activeNavIndex < navItems.length - 1) scrollToItem(navItems[activeNavIndex + 1].index)
+    if (canGoForward) scrollToItem(navigableIndices[activeNavPosition + 1])
+  }
+
+  const goBackToIntake = () => {
+    reset()
+    resetProfile()
   }
 
   return (
@@ -151,20 +175,39 @@ function App() {
           total={trackableIds.length}
           progress={progress}
         />
-        <nav className="step-nav" aria-label="Step navigation">
-          {navItems.map((nav) => (
-            <button
-              key={nav.id}
-              type="button"
-              className={`step-dot${nav.index === activeIndex ? ' step-dot--active' : ''}${completed.has(nav.id) ? ' step-dot--done' : ''}`}
-              onClick={() => scrollToItem(nav.index)}
-              aria-label={`Go to ${nav.id}`}
-              aria-current={nav.index === activeIndex ? 'step' : undefined}
-            >
-              {completed.has(nav.id) ? '✓' : nav.label}
-            </button>
-          ))}
-        </nav>
+        <div className="sticky-nav-row">
+          <button
+            type="button"
+            className="nav-btn nav-btn--compact"
+            onClick={activeNavPosition <= 0 ? goBackToIntake : goPrev}
+            aria-label={activeNavPosition <= 0 ? 'Back to intake questions' : 'Previous step'}
+          >
+            ← Back
+          </button>
+          <nav className="step-nav" aria-label="Step navigation">
+            {navItems.map((nav) => (
+              <button
+                key={nav.id}
+                type="button"
+                className={`step-dot${nav.index === activeIndex ? ' step-dot--active' : ''}${completed.has(nav.id) ? ' step-dot--done' : ''}`}
+                onClick={() => scrollToItem(nav.index)}
+                aria-label={`Go to ${nav.id}`}
+                aria-current={nav.index === activeIndex ? 'step' : undefined}
+              >
+                {completed.has(nav.id) ? '✓' : nav.label}
+              </button>
+            ))}
+          </nav>
+          <button
+            type="button"
+            className="nav-btn nav-btn--compact nav-btn--primary"
+            onClick={goNext}
+            disabled={!canGoForward}
+            aria-label="Next step"
+          >
+            Next →
+          </button>
+        </div>
       </div>
 
       <main className="steps-container">
@@ -215,18 +258,18 @@ function App() {
       </main>
 
       <footer className="nav-footer">
-        <button type="button" className="nav-btn" onClick={goPrev} disabled={activeNavIndex <= 0}>
-          ← Previous
-        </button>
-        <span className="nav-indicator">
-          {completedCount} of {trackableIds.length} complete
-        </span>
         <button
           type="button"
-          className="nav-btn nav-btn--primary"
-          onClick={goNext}
-          disabled={activeNavIndex >= navItems.length - 1}
+          className="nav-btn"
+          onClick={activeNavPosition <= 0 ? goBackToIntake : goPrev}
         >
+          ← Back
+        </button>
+        <span className="nav-indicator">
+          Step {activeNavPosition + 1} of {navigableIndices.length} · {completedCount} of{' '}
+          {trackableIds.length} complete
+        </span>
+        <button type="button" className="nav-btn nav-btn--primary" onClick={goNext} disabled={!canGoForward}>
           Next →
         </button>
       </footer>

@@ -153,11 +153,14 @@ export function IntakeForm({ onComplete }: IntakeFormProps) {
       </div>
 
       <div className="intake-nav">
-        {step > 0 && (
-          <button type="button" className="nav-btn" onClick={() => setStep(step - 1)}>
-            ← Back
-          </button>
-        )}
+        <button
+          type="button"
+          className="nav-btn"
+          onClick={() => setStep(step - 1)}
+          disabled={step === 0}
+        >
+          ← Back
+        </button>
         <button
           type="button"
           className="nav-btn nav-btn--primary intake-next"

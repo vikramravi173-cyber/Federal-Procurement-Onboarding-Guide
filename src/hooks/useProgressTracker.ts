@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 const COMPLETED_KEY = 'federal-procurement-completed-steps'
 const ACTIVE_INDEX_KEY = 'federal-procurement-active-index'
 
-export function useProgressTracker(trackableIds: string[]) {
+export function useProgressTracker(trackableIds: string[], maxNavIndex: number) {
   const [completed, setCompleted] = useState<Set<string>>(() => {
     try {
       const stored = localStorage.getItem(COMPLETED_KEY)
@@ -41,9 +41,12 @@ export function useProgressTracker(trackableIds: string[]) {
     })
   }, [])
 
-  const setActiveIndex = useCallback((index: number) => {
-    setActiveIndexState(Math.max(0, Math.min(index, trackableIds.length - 1)))
-  }, [trackableIds.length])
+  const setActiveIndex = useCallback(
+    (index: number) => {
+      setActiveIndexState(Math.max(0, Math.min(index, maxNavIndex)))
+    },
+    [maxNavIndex],
+  )
 
   const reset = useCallback(() => {
     setCompleted(new Set())
